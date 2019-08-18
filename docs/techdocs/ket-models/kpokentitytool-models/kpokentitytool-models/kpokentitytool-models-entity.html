@@ -10,49 +10,55 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div id="top" class="mb-4 navbar navbar-expand-lg navbar-dark bg-secondary">
+    <div class="mb-4 navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="navbar navbar-light bg-secondary">
             <a class="navbar-brand" href="#">Kpok Dev Toolbox</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="https://kpokpatagon.github.io/KpokDevToolbox/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="../../index.html">Index</a></li>
                 <li class="nav-item"><a class="nav-link" href="../../kpokentitytool-models/toc.html">Table of Contents</a></li>
             </ul>
         </div>
     </div>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
-            <div class="col-10">
+            <div class="col-9">
 <h1>Entity</h1>
 <p class="lead">Models an application entity.</p>
-<h5><small>Namespace</small>: KpokEntityTool.Models</h5>
-<h5><small>Type</small>: Class</h5>
-<dl class="mt-4 row">
-    <dt class="col-3">Public:</dt>
-    <dd class="col-9">Yes</dd>
-    <dt class="col-3">Protected:</dt>
-    <dd class="col-9">No</dd>
-    <dt class="col-3">Sealed:</dt>
-    <dd class="col-9">No</dd>
-    <dt class="col-3">Abstract:</dt>
-    <dd class="col-9">No</dd>
-<dt class="col-sm-3">Inherits from:</dt>
+<dl class="row mt-4">
+<dt class="text-truncate col-3">Namespace:</dt><dd class="col-9">KpokEntityTool.Models</dd>
+<dt class="text-truncate col-3">Type:</dt><dd class="col-9">Class</dd>
+</dl>
+<dl class="row mt-4">
+    <dt class="text-truncate col-3">Public:</dt><dd class="col-9">Yes</dd>
+    <dt class="text-truncate col-3">Protected:</dt><dd class="col-9">No</dd>
+    <dt class="text-truncate col-3">Sealed:</dt><dd class="col-9">No</dd>
+    <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
+<dt class="text-truncate col-sm-3">Inherits from:</dt>
 <dd class="col-sm-9">System.Object</dd>
-<dt class="col-sm-3">Implements:</dt>
+<dt class="text-truncate col-sm-3">Implements:</dt>
 <dd class="col-sm-9">System.IEquatable{KpokEntityTool.Models.Entity}, System.ComponentModel.INotifyPropertyChanged, KpokEntityTool.Models.IDesignerModel</dd>
 </dl>
 <h2 id="constructors" class="mt-5">Constructors</h2>
-<hr/>
-<p class="lead text-info">Entity</p>
-<p>Default constructor</p>
+<div id="M:KpokEntityTool.Models.Entity.#ctor" class="mb-5">
+    <h3 class="lead text-info">Entity</h3>
+    <p>Default constructor</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> Entity()</code></dd>
 </dl>
+</div>
 <h2 id="events" class="mt-5">Events</h2>
-<table class="table"><tbody>
+<table class="table">
+<thead>
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Summary</th>
+    <tr>
+</thead>
+<tbody>
 <tr>
     <td><span class="text-info" title="System.ComponentModel.PropertyChangedEventHandler">PropertyChangedEventHandler</span></td>
     <td><strong>PropertyChanged</strong></td>
@@ -60,190 +66,243 @@
 </tr>
 </tbody></table>
 <h2 id="properties" class="mt-5">Properties</h2>
-<hr/>
-<p class="lead text-info">Access</p>
-<p>Access modifier for this type.</p>
+<div id="P:KpokEntityTool.Models.Entity.Access" class="mb-5">
+    <h3 class="lead text-info">Access</h3>
+    <p>Access modifier for this type.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <a href="../../kpokentitytool-models/kpokentitytool-models/kpokentitytool-models-accessmodifier.html">AccessModifier</a> Access { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">DataServices</p>
-<p>DataService object name.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.DataServices" class="mb-5">
+    <h3 class="lead text-info">DataServices</h3>
+    <p>DataService object name.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataServices { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">DesignerTemplate</p>
-<p>A full path for the template used to generate designer code.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.DesignerTemplate" class="mb-5">
+    <h3 class="lead text-info">DesignerTemplate</h3>
+    <p>A full path for the template used to generate designer code.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DesignerTemplate { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">EnforceModelValidation</p>
-<p>Whether the validation must be enforce.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.EnforceModelValidation" class="mb-5">
+    <h3 class="lead text-info">EnforceModelValidation</h3>
+    <p>Whether the validation must be enforce.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> EnforceModelValidation { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">ExtendedProperties</p>
-<p>A collection arbitrary name/value properties.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.ExtendedProperties" class="mb-5">
+    <h3 class="lead text-info">ExtendedProperties</h3>
+    <p>A collection arbitrary name/value properties.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <a href="../../kpokentitytool-models/kpokentitytool-models/kpokentitytool-models-extendedpropertycollection.html">ExtendedPropertyCollection</a> ExtendedProperties { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Identity</p>
-<p>Indentity object name.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Identity" class="mb-5">
+    <h3 class="lead text-info">Identity</h3>
+    <p>Indentity object name.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Identity { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Name</p>
-<p>Name of the entity (class name).</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Name" class="mb-5">
+    <h3 class="lead text-info">Name</h3>
+    <p>Name of the entity (class name).</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Name { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Namespace</p>
-<p>Namespace where the entity lives.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Namespace" class="mb-5">
+    <h3 class="lead text-info">Namespace</h3>
+    <p>Namespace where the entity lives.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Namespace { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">NavigationalProperties</p>
-<p>A collection of navigational properties.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.NavigationalProperties" class="mb-5">
+    <h3 class="lead text-info">NavigationalProperties</h3>
+    <p>A collection of navigational properties.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <a href="../../kpokentitytool-models/kpokentitytool-models/kpokentitytool-models-navigationalpropertycollection.html">NavigationalPropertyCollection</a> NavigationalProperties { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Numerator</p>
-<p>Numerator object name.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Numerator" class="mb-5">
+    <h3 class="lead text-info">Numerator</h3>
+    <p>Numerator object name.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Numerator { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Properties</p>
-<p>A collection of the entity data properties.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Properties" class="mb-5">
+    <h3 class="lead text-info">Properties</h3>
+    <p>A collection of the entity data properties.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <a href="../../kpokentitytool-models/kpokentitytool-models/kpokentitytool-models-entitypropertycollection.html">EntityPropertyCollection</a> Properties { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Release</p>
-<p>Entity release number.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Release" class="mb-5">
+    <h3 class="lead text-info">Release</h3>
+    <p>Entity release number.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Release { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">ResourceFileName</p>
-<p>A full path for the resource file (*.resx) for the neutral culture labels.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.ResourceFileName" class="mb-5">
+    <h3 class="lead text-info">ResourceFileName</h3>
+    <p>A full path for the resource file (*.resx) for the neutral culture labels.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ResourceFileName { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Sequencer</p>
-<p>Sequencer object name.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Sequencer" class="mb-5">
+    <h3 class="lead text-info">Sequencer</h3>
+    <p>Sequencer object name.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Sequencer { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Summary</p>
-<p>Summary text or documentation.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Summary" class="mb-5">
+    <h3 class="lead text-info">Summary</h3>
+    <p>Summary text or documentation.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Summary { get; set; }</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">Validator</p>
-<p>Validator object name.</p>
+</div>
+<div id="P:KpokEntityTool.Models.Entity.Validator" class="mb-5">
+    <h3 class="lead text-info">Validator</h3>
+    <p>Validator object name.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Validator { get; set; }</code></dd>
 </dl>
+</div>
 <h2 id="methods" class="mt-5">Methods</h2>
-<hr/>
-<p class="lead text-info">Equals</p>
-<p>Checks whether <strong class="text-info">other</strong> is equal to this object.</p>
+<div id="M:KpokEntityTool.Models.Entity.Equals(KpokEntityTool.Models.Entity)" class="mb-5">
+    <h3 class="lead text-info">Equals</h3>
+    <p>Checks whether <strong class="text-info">other</strong> is equal to this object.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(other)</code></dd>
 </dl>
-<h5 class="mt-3">Returns</h5>
+<h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equal.</p>
-<h5 class="mt-5">Parameters</h5>
+<h6 class="mt-1">Parameters</h6>
 <table class="table table-sm table-bordered">
-<thead><tr><th>Name</th><th>Type</th><th>Summary</th></tr></thead>
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
 <tbody>
-<tr>
-<td>other</td>
-<td><strong>Entity</strong></td>
-<td>Object to compare.</td>
-</tr>
+    <tr>
+        <td>other</td>
+        <td><strong>Entity</strong></td>
+        <td>Object to compare.</td>
+    </tr>
 </tbody></table>
-<hr/>
-<p class="lead text-info">Equals</p>
-<p>Checks whether <strong class="text-info">obj</strong> is equal to this instance.</p>
+</div>
+<div id="M:KpokEntityTool.Models.Entity.Equals(System.Object)" class="mb-5">
+    <h3 class="lead text-info">Equals</h3>
+    <p>Checks whether <strong class="text-info">obj</strong> is equal to this instance.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(obj)</code></dd>
 </dl>
-<h5 class="mt-3">Returns</h5>
+<h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equal.</p>
-<h5 class="mt-5">Parameters</h5>
+<h6 class="mt-1">Parameters</h6>
 <table class="table table-sm table-bordered">
-<thead><tr><th>Name</th><th>Type</th><th>Summary</th></tr></thead>
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
 <tbody>
-<tr>
-<td>obj</td>
-<td><span class="text-info" title="System.Object">Object</span></td>
-<td>Object to compare.</td>
-</tr>
+    <tr>
+        <td>obj</td>
+        <td><span class="text-info" title="System.Object">Object</span></td>
+        <td>Object to compare.</td>
+    </tr>
 </tbody></table>
-<hr/>
-<p class="lead text-info">GetHashCode</p>
-<p>Implemented for avoiding warnings.</p>
+</div>
+<div id="M:KpokEntityTool.Models.Entity.GetHashCode" class="mb-5">
+    <h3 class="lead text-info">GetHashCode</h3>
+    <p>Implemented for avoiding warnings.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> GetHashCode()</code></dd>
 </dl>
-<hr/>
-<p class="lead text-info">ToString</p>
-<p>Return a text representation of the <b>Entity</b>.</p>
+</div>
+<div id="M:KpokEntityTool.Models.Entity.ToString" class="mb-5">
+    <h3 class="lead text-info">ToString</h3>
+    <p>Return a text representation of the <b>Entity</b>.</p>
 <dl class="row">
-    <dt class="col-2">Signature:</dt>
+    <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ToString()</code></dd>
 </dl>
+</div>
             </div>
-            <div class="col-2 d-none d-lg-block">
-                <div class="position-fixed">
+            <div class="col-3 d-none d-lg-block">
 <p><strong>In this document</strong></p>
 <ul class="list-unstyled">
-<li><a href="#top">Top</a></li>
 <li><a href="#constructors">Constructors</a></li>
 <li><a href="#events">Events</a></li>
 <li><a href="#properties">Properties</a></li>
+<li>
+    <ul style="font-size:0.8em;">
+        <li><a href="#P:KpokEntityTool.Models.Entity.Access">Access</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.DataServices">DataServices</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.DesignerTemplate">DesignerTemplate</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.EnforceModelValidation">EnforceModelValidation</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.ExtendedProperties">ExtendedProperties</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Identity">Identity</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Name">Name</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Namespace">Namespace</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.NavigationalProperties">NavigationalProperties</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Numerator">Numerator</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Properties">Properties</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Release">Release</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.ResourceFileName">ResourceFileName</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Sequencer">Sequencer</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Summary">Summary</a></li>
+        <li><a href="#P:KpokEntityTool.Models.Entity.Validator">Validator</a></li>
+    </ul>
+</li>
 <li><a href="#methods">Methods</a></li>
+<li>
+    <ul style="font-size:0.8em;">
+        <li><a href="#M:KpokEntityTool.Models.Entity.Equals(KpokEntityTool.Models.Entity)">Equals</a></li>
+        <li><a href="#M:KpokEntityTool.Models.Entity.Equals(System.Object)">Equals</a></li>
+        <li><a href="#M:KpokEntityTool.Models.Entity.GetHashCode">GetHashCode</a></li>
+        <li><a href="#M:KpokEntityTool.Models.Entity.ToString">ToString</a></li>
+    </ul>
+</li>
 </ul>
-                </div>
             </div>
         </div>
     </div>
-    <div class="text-light bg-dark mt-5">
-        <div class="text-right py-2">
-            <a href="#top" class="text-light mx-3">Top</a>
-        </div>
-    </div>
+
 </body>
 </html>
