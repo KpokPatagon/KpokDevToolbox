@@ -33,17 +33,52 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-3">
                 <h3>Extensions</h3>
-                <p><a href="./extensions/kpok-entity-tool/index.html">Kpok Entity Tool</a></p>
+                <div><a href="./extensions/kpok-doc-tool/index.html">Kpok Doc Tool</a></div>
+                <div><a href="./extensions/kpok-entity-tool/index.html">Kpok Entity Tool</a></div>
             </div>
-            <div class="col-sm">
+            <div class="col-3">
+                <h3>Technical documentation</h3>
+                <div><a href="./techdocs/ket-models/index.html">Kpok Entity Tool Models</a></div>
+            </div>
+            <div class="col-6">
                 <h3>Templates</h3>
-                <p><a href="./templates/index.html">Template documentation</a></p>
-            </div>
-            <div class="col-sm">
-                <h3>Models</h3>
-                <p><a href="./techdocs/ket-models/index.html">KpokEntityTool.Models</a></p>
+                <p>
+                    <strong>T4</strong> templates for code generation can be found within the template
+                    directory of <a href="https://github.com/KpokPatagon/KpokDevToolbox">this</a> documentation repo.
+                </p>
+                <p class="lead">Available templates</p>
+                <ul>
+                    <li>
+                        <code>DataModel-1.0.tt</code><br >
+                        Generates <strong>domain object models</strong> based on entities (*.ent) models.
+                    </li>
+                    <li>
+                        <code>DataServices-1.0.tt</code><br />
+                        Generates <strong>data services</strong> based on data service (*.datasvc) models.
+                    </li>
+                    <li>
+                        <code>DbSql-CreateTable-1.0.tt</code><br />
+                        Generates <strong>SQL Server</strong> create table script based on table (*.tbl) models.
+                    </li>
+                    <li>
+                        <code>Factory-1.0.tt</code><br />
+                        Generates <strong>factory configuration XML</strong> files based en factory (*.fac) models.
+                    </li>
+                    <li>
+                        <code>MultiTenantDataModel-1.0.tt</code><br>
+                        Generates <strong>multi-tenant domain object models</strong> based on entities (*.ent) models.
+                    </li>
+                    <li>
+                        <code>DataServices-1.0.tt</code><br />
+                        Generates <strong>multi-tenant data services</strong> based on data service (*.datasvc) models.
+                    </li>
+                    <li>
+                        <code>TableConfiguration-1.0.tt</code><br />
+                        Generates <strong>database table</strong> configuration code based on tables (*.tbl) models.
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
