@@ -1,0 +1,340 @@
+<#@ assembly name="netstandard.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="KpokEntityTool.Models" #>
+<#+
+    // returns an indentation string
+    protected virtual string Tabs(int tabs, int tablength = 4)
+    {
+        return new string(' ', tabs * tablength);
+    }
+
+
+    // returns a c# modifier string
+    protected virtual string BuildModifier(AccessModifier modifier)
+    {
+        return modifier == AccessModifier.Public ? "public"
+             : modifier == AccessModifier.Private ? "private"
+             : modifier == AccessModifier.Protected ? "protected" : "internal";
+    }
+
+    // returns a string for the column caption resource name.
+    protected string BuildColumnCaptionResourceName(string schema, string tableName, string columnName)
+    {
+        string name = string.Empty;
+        if (!string.IsNullOrWhiteSpace(schema))
+        {
+            name += schema + "_";
+        }
+        name += tableName + "_" + columnName + "_Caption";
+        return name;
+    }
+
+    // returns a string for the table caption resource name.
+    protected string BuildTableResourceName(string schema, string tableName)
+    {
+        string name = string.Empty;
+        if (!string.IsNullOrWhiteSpace(schema))
+        {
+            name += schema + "_";
+        }
+        name += tableName;
+        return name;
+    }
+
+    // returns the value of the specified extended property if exist or the default value.
+    protected virtual string GetExtPropValue(ExtendedPropertyCollection properties,
+                                             string key, string defaultValue)
+    {
+        if (properties != null && !string.IsNullOrWhiteSpace(key))
+        {
+            var p = properties.FirstOrDefault(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase));
+            if (p != null)
+            {
+                return string.IsNullOrWhiteSpace(p.Value) ? defaultValue : p.Value;
+            }
+        }
+        return defaultValue;
+    }
+
+    // return a unique parameter name
+    protected virtual string GetUniqueParameterName(List<string> names, string attempted)
+    {
+        if (names.Contains(attempted))
+        {
+            int c = names.Count(x => x.StartsWith(attempted));
+            string name = string.Format("{0}{1}", attempted, c);
+            names.Add(name);
+            return name;
+        }
+        else 
+        {
+            names.Add(attempted);
+            return attempted;
+        }
+    }
+
+    // finds out if a property is Boolean.
+    protected virtual bool IsBoolean(EntityProperty property)
+    {
+        return property.DataType == DataType.Boolean;
+    }
+
+    // finds out if a property is DateTime.
+    protected virtual bool IsDateTime(EntityProperty property)
+    {
+        return property.DataType == DataType.DateTime;
+    }
+
+    // finds out if a property is Decimal.
+    protected virtual bool IsDecimal(EntityProperty property)
+    {
+        return property.DataType == DataType.Decimal;
+    }
+
+    // finds out if a property is Float.
+    protected virtual bool IsFloat(EntityProperty property)
+    {
+        return property.DataType == DataType.Float;
+    }
+
+    // finds out if a property is Integer.
+    protected virtual bool IsInteger(EntityProperty property)
+    {
+        return property.DataType == DataType.BigInt
+            || property.DataType == DataType.Integer
+            || property.DataType == DataType.SmallInt
+            || property.DataType == DataType.TinyInt;
+    }
+
+	// finds out if a property is TimeSpan.
+	protected virtual bool IsTimeSpan(EntityProperty property)
+	{
+		return property.DataType == DataType.TimeSpan;
+	}
+
+    // finds out if a property data type is of a nullable data type.
+    protected virtual bool IsNullable(EntityProperty property)
+    {
+        bool isnullabledatatype = false;
+        switch (property.DataType)
+        {
+            case DataType.BigInt: 
+                isnullabledatatype = false;
+                break;
+            case DataType.Blob: 
+                isnullabledatatype = true;
+                break;
+            case DataType.Boolean: 
+                isnullabledatatype = false;
+                break;
+            case DataType.Clob: 
+                isnullabledatatype = true;
+                break;
+            case DataType.DateTime: 
+                isnullabledatatype = false;
+                break;
+            case DataType.Decimal: 
+                isnullabledatatype = false;
+                break;
+            case DataType.Float:
+                isnullabledatatype = false;
+                break;
+            case DataType.Guid: 
+                isnullabledatatype = true;
+                break;
+            case DataType.Integer: 
+                isnullabledatatype = false;
+                break;
+            case DataType.NClob: 
+                isnullabledatatype = true;
+                break;
+            case DataType.NText: 
+                isnullabledatatype = true;
+                break;
+            case DataType.SmallInt: 
+                isnullabledatatype = false;
+                break;
+            case DataType.Text: 
+                isnullabledatatype = true;
+                break;
+			case DataType.TimeSpan:
+				isnullabledatatype = false;
+				break;
+            case DataType.TinyInt: 
+                isnullabledatatype = false;
+                break;
+        }
+        return isnullabledatatype;
+    }
+
+    // checks if attempted has the specified hint prefix and cleans the value up.
+    protected virtual bool HasHintPrefix(string prefix, string attempted, out string value)
+    {
+        value = attempted;
+        if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(attempted))
+            return false;
+        
+        if (attempted.Length > prefix.Length && 
+            attempted.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            value = attempted.Substring(prefix.Length);
+            return true;
+        }
+        return false;
+    }
+
+    // removes hint prefix
+    protected virtual string RemoveHintPrefix(string attempted)
+    {
+        if (string.IsNullOrWhiteSpace(attempted))
+            return attempted ?? string.Empty;
+        
+        if (attempted.StartsWith("$("))
+        {
+            int rp = attempted.IndexOf(")");
+            if (rp != -1 && attempted.Length > rp) {
+                return attempted.Substring(rp + 1);
+            }
+        }
+        return attempted;
+    }
+
+    // replaces new line characters for spaces
+    protected virtual string ReplaceNewLine(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return string.Empty;
+        return value.Replace(Environment.NewLine, " ");
+    }
+
+    // converts a property name to an argument name
+    protected virtual string ToArgument(string propertyName)
+    {
+        if (!string.IsNullOrWhiteSpace(propertyName))
+        {
+            if (propertyName.Length == 1)
+            {
+                return propertyName.ToLowerInvariant();
+            }
+            else
+            {
+                return string.Concat(propertyName.Substring(0, 1).ToLowerInvariant(),
+                                     propertyName.Substring(1));
+            }
+        }
+        return propertyName ?? string.Empty;
+    }
+
+    // converts a table name to camelcase
+    protected virtual string ToCamelCaseName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return string.Empty;
+
+        string[] parser = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+        return string.Join(string.Empty, parser.Select(x => 
+        {
+            if (x.Length == 0)
+            {
+                return string.Empty;
+            }
+            else if (x.Length == 1)
+            {
+                return x.ToUpperInvariant();
+            }
+            else
+            {
+                return string.Concat(x.Substring(0, 1).ToUpperInvariant(),
+                                     x.Substring(1).ToLowerInvariant());
+            }
+        }));
+    }
+
+    // converts a DataType into a C# type
+    protected virtual string ToCSharpType(DataType dataType)
+    {
+        return ToCSharpType(dataType, true);
+    }
+
+    // converts a DataType into a C# type
+    protected virtual string ToCSharpType(DataType dataType, bool mandatory)
+    {
+        string suffix = mandatory ? string.Empty : "?";
+        switch (dataType)
+        {
+        case DataType.BigInt:     return "long" + suffix;
+        case DataType.Blob:       return "byte[]";
+        case DataType.Boolean:    return "bool";
+
+        case DataType.Clob:
+        case DataType.NClob:
+            return "string";
+
+        case DataType.DateTime:   return "DateTime" + suffix;
+        case DataType.Decimal:    return "decimal" + suffix;
+        case DataType.Float:      return "double" + suffix;
+        case DataType.Guid:       return "Guid";
+        case DataType.Integer:    return "int" + suffix;
+        case DataType.SmallInt:   return "short" + suffix;
+		case DataType.TimeSpan:   return "TimeSpan" + suffix;
+        case DataType.TinyInt:    return "byte" + suffix;
+
+        default:
+            return "string";
+        }
+    }
+
+    // converts a property name to an field name.
+    protected virtual string ToFieldName(string propertyName)
+    {
+        if (!string.IsNullOrWhiteSpace(propertyName))
+        {            
+            if (propertyName.Length == 1)
+            {
+                return string.Concat("_", propertyName.ToLowerInvariant());
+            }
+            else
+            {
+                return string.Concat("_", propertyName.Substring(0, 1).ToLowerInvariant(),
+                                          propertyName.Substring(1));
+            }
+        }
+        return propertyName ?? string.Empty;
+    }
+
+    // converts the relation operator into a text representing the a RelationalOperator enum.
+    protected virtual string ToRelationalOperatorEnumText(RelationOperator relation)
+    {
+        switch (relation)
+        {
+        case RelationOperator.And:  return "RelationalOperator.And";
+        case RelationOperator.Or:   return "RelationalOperator.Or";
+
+        default:
+            return string.Empty;
+        }
+    }
+
+    // writes a summary documentation
+	protected virtual void WriteSummary(int indent, string summary)
+	{
+		if (string.IsNullOrWhiteSpace(summary)) 
+        {
+			return;
+		}
+
+        ClearIndent();
+        PushIndent(new string(' ', indent * 4));
+
+        WriteLine("/// <summary>");
+		foreach (var l in summary.SplitNewLine()) 
+		{
+			WriteLine("/// " + l);
+		}
+		WriteLine("/// </summary>");
+
+        ClearIndent();
+	}    
+#>

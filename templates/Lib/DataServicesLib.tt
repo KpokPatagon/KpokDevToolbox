@@ -1,0 +1,29 @@
+<#@ assembly name="netstandard.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="KpokEntityTool.Models" #>
+<#+
+    // builds an argument declaration for a data service filter.
+    protected virtual string BuildArgument(Parameter parameter)
+    {
+        return parameter.DataType + " " + RemoveHintPrefix(parameter.Name);
+    }
+
+    // builds a method parameter list.
+	protected virtual string BuildArguments(ParameterCollection parameters)
+	{
+		if (parameters.Any()) 
+        {
+            string sep = string.Empty;
+            string result = string.Empty;
+            foreach (var parameter in parameters)
+            {
+                result += sep + BuildArgument(parameter);
+                if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
+            }	
+    		return result;
+		}
+        else return string.Empty;
+	}
+#>

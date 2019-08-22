@@ -25,11 +25,55 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h1>Kpok Entity Tool</h1>
+    <div class="container mb-5">
+        <h1 class="mt-3">Kpok Entity Tool</h1>
         <p>
-            This documentation is under construction.
+            <strong>Kpok Entity Tool</strong> is an extension for <span class="text-italic">Visual Studio</span> that
+            adds four editors allowing developers to edit data models that configures 
+            <span class="text-info">Entities</span>, <span class="text-info">Data Services</span>, 
+            <span class="text-info">Factories</span> and <span class="text-info">Tables</span>, that will be use later
+            to generate code using <strong>T4</strong> templates.
         </p>
+        <p>
+            It also provides snippets that help in the development of code based on the
+            <a href="https://kpokpatagon.github.io/InetdevFx/index.html" target="_blank">Inetdev Framework Std</a>.
+        </p>
+        
+        <h3 class="mt-5">Other characteristic are...</h3>
+        <ul>
+            <li>
+                A generic <strong>Add New Item</strong> template that can apply any arbitrary T4 template to a 
+                supported model for code generation.
+            </li>
+            <li>
+                Reverse engeneering of database tables to fills the supported models with table data. 
+            </li>
+        </ul>
+
+        <div class="alert alert-info mt-5">
+            <h5>Note</h5>
+            <p>
+                Even though the <a href="../../techdocs/ket-models/index.html">models</a> match the use case for
+                generating code based on <a href="https://kpokpatagon.github.io/InetdevFx/index.html" target="_blank">Inetdev Framework Std</a>
+                they can be used to generate any type of code that can be created based on those models properties.
+            </p>
+        </div>
+
+        <h3 class="mt-5">Usage</h3>
+        <p>
+            From <strong>Add New Item</strong> dialog of Visual Studio, just select <strong>Kpok Entity Tool</strong>
+            and pick the kind of model to generate.
+        </p>
+        <div class="text-center my-5 col-8">
+            <img src="../../assets/ket-file-new.png" class="rounded img-fluid" />
+        </div>
+        <p>
+            Then fill in the data as required for the T4 template to use and the code will be 
+            automatically generated when the file is saved.
+        </p>
+        <div class="text-center my-5 col-8">
+            <img src="../../assets/ket-entity-editor.png" class="rounded img-fluid" />
+        </div>
     </div>
 </body>
 </html>
