@@ -35,6 +35,7 @@
 namespace <#= Source.Namespace #>
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -243,22 +244,40 @@ foreach (var filter in Source.Filters)
 
     if (filter.IsAsync)
     {
-        Write("return await BuildModelListAsync<" + filter.ReturnType + ">(s");
+        Write("var result = await BuildModelListAsync<" + filter.ReturnType + ">(s");
         if (par != null) 
         { 
             Write(", " + RemoveHintPrefix(par.Name)); 
         }
+        WriteLine(");");
+
+		Write("return result");
+
+		if (!filter.IsCollection)
+		{
+			Write(".FirstOrDefault()");
+		}
+
+		WriteLine(";");
     }
     else
     {
-        Write("return BuildModelList<" + filter.ReturnType + ">(s");
+        Write("var result = BuildModelList<" + filter.ReturnType + ">(s");
         if (par != null) 
         { 
             Write(", " + RemoveHintPrefix(par.Name)); 
         }
-    }
+        WriteLine(");");
 
-    WriteLine(");");
+		Write("return result");
+
+		if (!filter.IsCollection)
+		{
+			Write(".FirstOrDefault()");
+		}
+
+		WriteLine(";");
+    }
     
     ClearIndent();
 

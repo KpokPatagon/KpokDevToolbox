@@ -20,24 +20,28 @@
     string pb;
     string sep;
     string tmp;
+    string args;
     string paramName;
     string returnType;
+    string pkfArgName;
+    string pkfArgDelc;
 
     List<string> pnames;
     
     Field fld;
-    Field pkfld;
+    Field pkf;
     Parameter par;
     FilterPredicate predicate;
     List<FilterPredicate> predicates;
 
-    pkfld = Source.Fields.FirstOrDefault(x => x.IsPartitionKey);
+    pkf = Source.Fields.FirstOrDefault(x => x.IsPartitionKey);
 
     ClearIndent();
 #>
 namespace <#= Source.Namespace #>
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -121,20 +125,32 @@ foreach (var filter in Source.Filters)
         returnType = "async Task<" + returnType + ">";
     }
 
+    pkfArgDelc = string.Empty;
+    pkfArgName = string.Empty;
+    if (pkf != null)
+    {
+        pkfArgName = ToArgument(pkf.FieldKey);
+        pkfArgDelc = ToCSharpType(pkf.DataType) + " " + pkfArgName;
+    }
+
+    args = BuildArguments(filter.Parameters);
+    args = pkfArgDelc + (string.IsNullOrWhiteSpace(args) ? string.Empty : ", ") + args;
+
     ClearIndent();
     WriteLine(string.Empty);
     WriteSummary(2, filter.Summary);
+    WriteLine(Tabs(2) + "/// <param name=\"" + pkfArgName + "\">Identification of the current <b>Tenant</b>.</param>");
     foreach (var parameter in filter.Parameters) {
         WriteLine(Tabs(2) + "/// <param name=\"" + RemoveHintPrefix(parameter.Name) + "\">" + (parameter.Summary ?? string.Empty) + "</param>" );
     }
-    WriteLine(Tabs(2) + BuildModifier(filter.Access) + " virtual " + returnType + " " + filter.Name + "(" + BuildArguments(filter.Parameters) + ")");
+    WriteLine(Tabs(2) + BuildModifier(filter.Access) + " virtual " + returnType + " " + filter.Name + "(" + args + ")");
     WriteLine(Tabs(2) + "{");
     WriteLine(Tabs(3) + "EnsureObjectState();");
 
     foreach (var parameter in filter.Parameters) {
         if (HasHintPrefix("$(NC)", parameter.Name, out paramName)) {
-            WriteLine(Tabs(3) + "if (" + RemoveHintPrefix(parameter.Name) + " == null)");
-            WriteLine(Tabs(4) + "throw new ArgumentNullException(nameof(" + RemoveHintPrefix(parameter.Name) + "));");
+            WriteLine(Tabs(3) + "if (" + paramName + " == null)");
+            WriteLine(Tabs(4) + "throw new ArgumentNullException(nameof(" + paramName + "));");
         }
     }
 
@@ -215,11 +231,11 @@ foreach (var filter in Source.Filters)
 
     } // if (filter.Predicates.Any())
 
-    if (pkfld != null)
+    if (pkf != null)
     {
         PushIndent(Tabs(3));
         WriteLine(string.Empty);
-        WriteLine("AppendPartitionKeyPredicate(s, Fields[FKey." + pkfld.FieldKey + "]);");
+        WriteLine("AppendPartitionKeyPredicate(s, Fields[FKey." + pkf.FieldKey + "], " + pkfArgName + ");");
         ClearIndent();
     }
 
@@ -255,23 +271,41 @@ foreach (var filter in Source.Filters)
 
     if (filter.IsAsync)
     {
-        Write("return await BuildModelListAsync<" + filter.ReturnType + ">(s");
+        Write("var result = await BuildModelListAsync<" + filter.ReturnType + ">(s");
         if (par != null) 
         { 
             Write(", " + RemoveHintPrefix(par.Name)); 
         }
+		WriteLine(");");
+
+		Write("return result");
+
+		if (!filter.IsCollection)
+		{
+			Write(".FirstOrDefault()");
+		}
+
+		WriteLine(";");
     }
     else
     {
-        Write("return BuildModelList<" + filter.ReturnType + ">(s");
+        Write("var result = BuildModelList<" + filter.ReturnType + ">(s");
         if (par != null) 
         { 
             Write(", " + RemoveHintPrefix(par.Name)); 
         }
+		WriteLine(");");
+
+		Write("return result");
+
+		if (!filter.IsCollection)
+		{
+			Write(".FirstOrDefault()");
+		}
+
+		WriteLine(";");
     }
 
-    WriteLine(");");
-    
     ClearIndent();
 
     WriteLine(Tabs(2) + "}");

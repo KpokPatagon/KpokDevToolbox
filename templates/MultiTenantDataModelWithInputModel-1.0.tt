@@ -20,6 +20,7 @@
     string sep;
     string tmp;
     string returnType;
+    EntityProperty pkp;
 
     var pks = Source.Properties.Where(x =>
     {
@@ -40,6 +41,8 @@
 
     bool hasPK = pks.Any();
 
+    pkp = Source.Properties.FirstOrDefault(x => x.IsPartitionKey);
+
     ExtendedProperty modelLabelsType;
     ExtendedProperty modelLabelsNamespace;
     modelLabelsType = Source.ExtendedProperties.FirstOrDefault(x => x.Key == "ModelLabelsType");
@@ -54,8 +57,11 @@ namespace <#= Source.Namespace #>
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Newtonsoft.Json;
+
     using Inetdev.Data;
     using Inetdev.Context;
+    using Inetdev.Multitenancy;
 <# if (modelLabelsNamespace != null && !string.IsNullOrWhiteSpace(modelLabelsNamespace.Value)) { #>    
     using <#= modelLabelsNamespace.Value #>;
 <# } #>
@@ -109,6 +115,11 @@ foreach (var property in Source.Properties)
     WriteSummary(2, property.Summary);
 
     PushIndent(Tabs(2));
+
+    if (property.IsPartitionKey)
+    {
+        WriteLine("[PartitionKey]");
+    }
 
     switch (property.DataType) {
     case DataType.BigInt:
@@ -339,7 +350,10 @@ foreach (var property in Source.NavigationalProperties)
 
     PushIndent(Tabs(2));
 
-    if (property.IsParent) { WriteLine("[ParentNavigationalProperty]"); }
+    if (property.IsParent) { 
+        WriteLine("[JsonIgnore]");
+        WriteLine("[ParentNavigationalProperty]"); 
+    }
 
     WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
     WriteLine("{");
@@ -468,13 +482,9 @@ foreach (var property in Source.NavigationalProperties)
 ClearIndent();
 #>
 
-
-        /// <summary>
-        /// Whether model validation must be enforced.
-        /// </summary>
+        /// <summary>Whether model validation must be enforced.</summary>
         [Editable(false)]
         public override bool EnforceModelValidation => <#= (Source.EnforceModelValidation ? "true" : "false") #>;
-
 <# if (pks.Any()) { #>
         
         #region Static loaders
@@ -482,46 +492,68 @@ ClearIndent();
         /// <summary>
         /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
         /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static <#= Source.Name #> Load(<#= BuildArguments(pks) #>)
-        {
 <#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return o;
-        }
+ClearIndent();
+PushIndent(Tabs(2));
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("/// <param name=\"" + ToArgument(pkp.Name) + "\">Identification of the current <b>Tenant</b></param>");
+}
+foreach (var pk in pks) {
+    WriteLine("/// <param name=\"" + ToArgument(pk.Name) + "\">" + (pk.Summary ?? string.Empty) + "</param>");
+}
+Write("public static " + Source.Name + " Load(");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    Write(ToCSharpType(pkp.DataType, pkp.Mandatory) + " " + ToArgument(pkp.Name) + ", ");
+}
+Write(BuildArguments(pks));
+WriteLine(")");
+WriteLine("{");
+PushIndent(Tabs(1));
+WriteLine(Source.Name + " o = ApplicationContext.Current.GetObject<" + Source.Name + ">();");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("o." + pkp.Name + " = " + ToArgument(pkp.Name) + ";");
+}
+foreach (var pk in pks) {
+    WriteLine("o." + pk.Name + " = " + ToArgument(pk.Name) + ";");
+}
+WriteLine("return o.DataServices.GetModel(o);");
+PopIndent();
+WriteLine("}");
+ClearIndent();
+#>        
 
         /// <summary>
         /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
         /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static Task<<#= Source.Name #>> LoadAsync(<#= BuildArguments(pks) #>)
-        {
 <#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return Task.FromResult(o);
-        }
+ClearIndent();
+PushIndent(Tabs(2));
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("/// <param name=\"" + ToArgument(pkp.Name) + "\">Identification of the current <b>Tenant</b></param>");
+}
+foreach (var pk in pks) {
+    WriteLine("/// <param name=\"" + ToArgument(pk.Name) + "\">" + (pk.Summary ?? string.Empty) + "</param>");
+}
+Write("public static Task<" + Source.Name + "> LoadAsync(");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    Write(ToCSharpType(pkp.DataType, pkp.Mandatory) + " " + ToArgument(pkp.Name) + ", ");
+}
+Write(BuildArguments(pks));
+WriteLine(")");
+WriteLine("{");
+PushIndent(Tabs(1));
+WriteLine(Source.Name + " o = ApplicationContext.Current.GetObject<" + Source.Name + ">();");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("o." + pkp.Name + " = " + ToArgument(pkp.Name) + ";");
+}
+foreach (var pk in pks) {
+    WriteLine("o." + pk.Name + " = " + ToArgument(pk.Name) + ";");
+}
+WriteLine("return Task.FromResult(o.DataServices.GetModel(o));");
+PopIndent();
+WriteLine("}");
+ClearIndent();
+#>
 
         #endregion
 
@@ -591,6 +623,127 @@ ClearIndent();
         #endregion
 <# } #>
     }
+
+<#
+	WriteSummary(1, Source.Summary);
+	PushIndent(Tabs(1));
+	WriteLine(BuildModifier(Source.Access) + " partial class " + Source.Name + "InputModel");
+	ClearIndent();
+#>
+	{
+		/// <summary>Creates a new instance of <see cref="<#= Source.Name #>InputModel" />.</summary>
+		public <#= Source.Name #>InputModel()
+		{
+		}
+
+		/// <summary>Initializes a new instance of <see cref="<#= Source.Name #>InputModel" /> from <paramref name="source"/>.</summary>
+		/// <exception cref="ArgumentNullException">
+        ///     Thrown when <paramref name="source"/> is <see langword="null"/>.
+        /// </exception>
+		public <#= Source.Name #>InputModel(<#= Source.Name #> source)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
+<#
+ClearIndent();
+PushIndent(Tabs(3));
+foreach (var property in Source.Properties)
+{
+	WriteLine(property.Name + " = source." + property.Name + ";");
+}
+ClearIndent();
+#>
+		}
+
+<#
+foreach (var property in Source.Properties)
+{
+	ClearIndent();
+
+	WriteSummary(2, property.Summary);
+	PushIndent(Tabs(2));
+
+	returnType = string.IsNullOrWhiteSpace(property.CastDataType)
+            ? ToCSharpType(property.DataType, property.Mandatory)
+            : property.CastDataType;
+
+	Write("[Display(");
+    if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) {
+        Write("Name = \"" + Source.Name + property.Name + "Caption\"");
+    }
+	else { Write("Name = \"" + property.Caption + "\""); }
+    if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) { Write(", ResourceType = typeof(" + modelLabelsType.Value + ")"); }
+	WriteLine(")]");
+	
+    if (     !string.IsNullOrWhiteSpace(property.MandatoryMessage)
+        && ((!string.IsNullOrWhiteSpace(property.PrimaryKey) && property.PrimaryKey != "0") || property.Mandatory)) 
+    {
+        if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) {
+            Write("[Required(ErrorMessageResourceName = \"" + Source.Name + property.Name + "MandatoryMessage\"");
+            WriteLine(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + "))]");
+        }
+        else {
+            WriteLine("[Required(ErrorMessage = \"" + property.MandatoryMessage + "\")]");
+        }
+    }
+
+    if (   property.DataType == DataType.Clob 
+        || property.DataType == DataType.NClob 
+        || property.DataType == DataType.NText 
+        || property.DataType == DataType.Text)
+    {
+        if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage))
+        {
+            int minlen = 0;
+            int maxlen = 0;
+            if (!string.IsNullOrWhiteSpace(property.MinLength)) {
+                Int32.TryParse(property.MinLength, out minlen);
+            }
+            if (!string.IsNullOrWhiteSpace(property.MaxLength)) {
+                Int32.TryParse(property.MaxLength, out maxlen);
+            }
+
+            if (maxlen > 0)
+            {
+                Write("[StringLength(" + Convert.ToString(maxlen));
+                if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) 
+                {
+                    Write(", ErrorMessageResourceName = \"" + Source.Name + property.Name + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + ")");
+                }
+                else 
+                {
+                    Write(", ErrorMessage = \"" + property.InvalidContentMessage + "\"");
+                }
+                if (minlen > 0) {
+                    Write(", MinimumLength = " + Convert.ToString(minlen));
+                }
+                WriteLine(")]");
+            }
+
+            if (property.IsMail)
+            {
+                Write("[EmailAddress(");
+                if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) 
+                {
+                    Write("ErrorMessageResourceName = \"" + Source.Name + property.Name + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + ")");
+                }
+                else 
+                {
+                    Write("ErrorMessage = \"" + property.InvalidContentMessage + "\"");
+                }
+                WriteLine(")]");
+            }
+        }
+    }
+
+	WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name + " { get; set; }");
+}
+ClearIndent();
+#>
+	}
 }
 // Tpl: <#= System.IO.Path.GetFileName(TemplateFileName) #>
 // Src: <#= System.IO.Path.GetFileName(SourceFileName) #>

@@ -10,7 +10,6 @@
         return new string(' ', tabs * tablength);
     }
 
-
     // returns a c# modifier string
     protected virtual string BuildModifier(AccessModifier modifier)
     {
@@ -317,10 +316,52 @@
         }
     }
 
-    // writes a summary documentation
-	protected virtual void WriteSummary(int indent, string summary)
+    // writes a remarks documentation
+	protected virtual void WriteRemarks(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(summary)) 
+		if (string.IsNullOrWhiteSpace(text)) 
+        {
+			return;
+		}
+
+        ClearIndent();
+        PushIndent(new string(' ', indent * 4));
+
+        WriteLine("/// <remarks>");
+		foreach (var l in text.SplitNewLine()) 
+		{
+			WriteLine("/// " + l);
+		}
+		WriteLine("/// </remarks>");
+
+        ClearIndent();
+	} 
+
+    // writes a returns documentation
+	protected virtual void WriteReturns(int indent, string text)
+	{
+		if (string.IsNullOrWhiteSpace(text)) 
+        {
+			return;
+		}
+
+        ClearIndent();
+        PushIndent(new string(' ', indent * 4));
+
+        WriteLine("/// <returns>");
+		foreach (var l in text.SplitNewLine()) 
+		{
+			WriteLine("/// " + l);
+		}
+		WriteLine("/// </returns>");
+
+        ClearIndent();
+	} 
+
+    // writes a summary documentation
+	protected virtual void WriteSummary(int indent, string text)
+	{
+		if (string.IsNullOrWhiteSpace(text)) 
         {
 			return;
 		}
@@ -329,7 +370,7 @@
         PushIndent(new string(' ', indent * 4));
 
         WriteLine("/// <summary>");
-		foreach (var l in summary.SplitNewLine()) 
+		foreach (var l in text.SplitNewLine()) 
 		{
 			WriteLine("/// " + l);
 		}

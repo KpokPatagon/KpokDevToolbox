@@ -54,6 +54,8 @@ namespace <#= Source.Namespace #>
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Newtonsoft.Json;
+
     using Inetdev.Data;
     using Inetdev.Context;
 <# if (modelLabelsNamespace != null && !string.IsNullOrWhiteSpace(modelLabelsNamespace.Value)) { #>    
@@ -339,7 +341,10 @@ foreach (var property in Source.NavigationalProperties)
 
     PushIndent(Tabs(2));
 
-    if (property.IsParent) { WriteLine("[ParentNavigationalProperty]"); }
+    if (property.IsParent) { 
+        WriteLine("[JsonIgnore]");
+        WriteLine("[ParentNavigationalProperty]"); 
+    }
 
     WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
     WriteLine("{");
@@ -591,6 +596,127 @@ ClearIndent();
         #endregion
 <# } #>
     }
+
+<#
+	WriteSummary(1, Source.Summary);
+	PushIndent(Tabs(1));
+	WriteLine(BuildModifier(Source.Access) + " partial class " + Source.Name + "InputModel");
+	ClearIndent();
+#>
+	{
+		/// <summary>Creates a new instance of <see cref="<#= Source.Name #>InputModel" />.</summary>
+		public <#= Source.Name #>InputModel()
+		{
+		}
+
+		/// <summary>Initializes a new instance of <see cref="<#= Source.Name #>InputModel" /> from <paramref name="source"/>.</summary>
+		/// <exception cref="ArgumentNullException">
+        ///     Thrown when <paramref name="source"/> is <see langword="null"/>.
+        /// </exception>
+		public <#= Source.Name #>InputModel(<#= Source.Name #> source)
+		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
+<#
+ClearIndent();
+PushIndent(Tabs(3));
+foreach (var property in Source.Properties)
+{
+	WriteLine(property.Name + " = source." + property.Name + ";");
+}
+ClearIndent();
+#>
+		}
+
+<#
+foreach (var property in Source.Properties)
+{
+	ClearIndent();
+
+	WriteSummary(2, property.Summary);
+	PushIndent(Tabs(2));
+
+	returnType = string.IsNullOrWhiteSpace(property.CastDataType)
+            ? ToCSharpType(property.DataType, property.Mandatory)
+            : property.CastDataType;
+
+	Write("[Display(");
+    if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) {
+        Write("Name = \"" + Source.Name + property.Name + "Caption\"");
+    }
+	else { Write("Name = \"" + property.Caption + "\""); }
+    if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) { Write(", ResourceType = typeof(" + modelLabelsType.Value + ")"); }
+	WriteLine(")]");
+	
+    if (     !string.IsNullOrWhiteSpace(property.MandatoryMessage)
+        && ((!string.IsNullOrWhiteSpace(property.PrimaryKey) && property.PrimaryKey != "0") || property.Mandatory)) 
+    {
+        if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) {
+            Write("[Required(ErrorMessageResourceName = \"" + Source.Name + property.Name + "MandatoryMessage\"");
+            WriteLine(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + "))]");
+        }
+        else {
+            WriteLine("[Required(ErrorMessage = \"" + property.MandatoryMessage + "\")]");
+        }
+    }
+
+    if (   property.DataType == DataType.Clob 
+        || property.DataType == DataType.NClob 
+        || property.DataType == DataType.NText 
+        || property.DataType == DataType.Text)
+    {
+        if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage))
+        {
+            int minlen = 0;
+            int maxlen = 0;
+            if (!string.IsNullOrWhiteSpace(property.MinLength)) {
+                Int32.TryParse(property.MinLength, out minlen);
+            }
+            if (!string.IsNullOrWhiteSpace(property.MaxLength)) {
+                Int32.TryParse(property.MaxLength, out maxlen);
+            }
+
+            if (maxlen > 0)
+            {
+                Write("[StringLength(" + Convert.ToString(maxlen));
+                if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) 
+                {
+                    Write(", ErrorMessageResourceName = \"" + Source.Name + property.Name + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + ")");
+                }
+                else 
+                {
+                    Write(", ErrorMessage = \"" + property.InvalidContentMessage + "\"");
+                }
+                if (minlen > 0) {
+                    Write(", MinimumLength = " + Convert.ToString(minlen));
+                }
+                WriteLine(")]");
+            }
+
+            if (property.IsMail)
+            {
+                Write("[EmailAddress(");
+                if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) 
+                {
+                    Write("ErrorMessageResourceName = \"" + Source.Name + property.Name + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + ")");
+                }
+                else 
+                {
+                    Write("ErrorMessage = \"" + property.InvalidContentMessage + "\"");
+                }
+                WriteLine(")]");
+            }
+        }
+    }
+
+	WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name + " { get; set; }");
+}
+ClearIndent();
+#>
+	}
 }
 // Tpl: <#= System.IO.Path.GetFileName(TemplateFileName) #>
 // Src: <#= System.IO.Path.GetFileName(SourceFileName) #>

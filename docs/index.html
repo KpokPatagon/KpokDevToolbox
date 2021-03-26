@@ -55,12 +55,14 @@
                         Generates <strong>domain object models</strong> based on entities (*.ent) models.
                     </li>
                     <li>
-                        <code>DataServices-1.0.tt</code><br />
-                        Generates <strong>data services</strong> based on data service (*.datasvc) models.
+                        <code>DataModelWithInputModel-1.0.tt</code><br>
+                        Generates <strong>domain object models</strong> based on entities (*.ent) models and
+                        an extra simple input model class with only the data properties, that can be used
+                        in Asp.Net controllers as input.
                     </li>
                     <li>
-                        <code>DbSql-CreateTable-1.0.tt</code><br />
-                        Generates <strong>SQL Server</strong> create table script based on table (*.tbl) models.
+                        <code>DataServices-1.0.tt</code><br />
+                        Generates <strong>data services</strong> based on data service (*.datasvc) models.
                     </li>
                     <li>
                         <code>Factory-1.0.tt</code><br />
@@ -71,17 +73,14 @@
                         Generates <strong>multi-tenant domain object models</strong> based on entities (*.ent) models.
                     </li>
                     <li>
-                        <code>DataServices-1.0.tt</code><br />
+                        <code>MultiTenantDataModelWithInputMode-1.0.tt</code><br>
+                        Generates <strong>multi-tenant domain object models</strong> based on entities (*.ent) models
+                        and an extra simple input model class with only the data properties, that can be used
+                        in Asp.Net controllers as input.
+                    </li>
+                    <li>
+                        <code>MultiTenantDataServices-1.0.tt</code><br />
                         Generates <strong>multi-tenant data services</strong> based on data service (*.datasvc) models.
-                    </li>
-                    <li>
-                        <code>TableConfiguration-1.0.tt</code><br />
-                        Generates <strong>database table</strong> configuration code based on tables (*.tbl) models.
-                    </li>
-                    <li>
-                        <code>TableJson-1.0.tt</code><br />
-                        Generates a JSON file from tables (*.tbl) models that is valid to be deserialized 
-                        into `Inetdev.Data.DatabaseSchema.Table` models.
                     </li>
                 </ul>
             </div>

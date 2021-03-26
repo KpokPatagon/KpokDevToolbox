@@ -20,6 +20,7 @@
     string sep;
     string tmp;
     string returnType;
+    EntityProperty pkp;
 
     var pks = Source.Properties.Where(x =>
     {
@@ -39,6 +40,8 @@
     }).OrderBy(x => Convert.ToInt32(x.PrimaryKey));
 
     bool hasPK = pks.Any();
+
+    pkp = Source.Properties.FirstOrDefault(x => x.IsPartitionKey);
 
     ExtendedProperty modelLabelsType;
     ExtendedProperty modelLabelsNamespace;
@@ -379,11 +382,11 @@ foreach (var property in Source.NavigationalProperties)
             }
             else if (IsDecimal(p)) 
             {
-                tmp += (p.PositiveOnly ? "<=" : "<") + "0m";
+                tmp += (p.PositiveOnly ? " <= " : " < ") + "0m";
             }
             else // if (IsInteger(p))
             {
-                tmp += (p.PositiveOnly ? "<=" : "<") + "0";
+                tmp += (p.PositiveOnly ? " <= " : " < ") + "0";
             }
             
             if (string.IsNullOrWhiteSpace(sep)) { sep = " && "; }
@@ -474,13 +477,9 @@ foreach (var property in Source.NavigationalProperties)
 ClearIndent();
 #>
 
-
-        /// <summary>
-        /// Whether model validation must be enforced.
-        /// </summary>
+        /// <summary>Whether model validation must be enforced.</summary>
         [Editable(false)]
         public override bool EnforceModelValidation => <#= (Source.EnforceModelValidation ? "true" : "false") #>;
-
 <# if (pks.Any()) { #>
         
         #region Static loaders
@@ -488,46 +487,68 @@ ClearIndent();
         /// <summary>
         /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
         /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static <#= Source.Name #> Load(<#= BuildArguments(pks) #>)
-        {
 <#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return o;
-        }
+ClearIndent();
+PushIndent(Tabs(2));
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("/// <param name=\"" + ToArgument(pkp.Name) + "\">Identification of the current <b>Tenant</b></param>");
+}
+foreach (var pk in pks) {
+    WriteLine("/// <param name=\"" + ToArgument(pk.Name) + "\">" + (pk.Summary ?? string.Empty) + "</param>");
+}
+Write("public static " + Source.Name + " Load(");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    Write(ToCSharpType(pkp.DataType, pkp.Mandatory) + " " + ToArgument(pkp.Name) + ", ");
+}
+Write(BuildArguments(pks));
+WriteLine(")");
+WriteLine("{");
+PushIndent(Tabs(1));
+WriteLine(Source.Name + " o = ApplicationContext.Current.GetObject<" + Source.Name + ">();");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("o." + pkp.Name + " = " + ToArgument(pkp.Name) + ";");
+}
+foreach (var pk in pks) {
+    WriteLine("o." + pk.Name + " = " + ToArgument(pk.Name) + ";");
+}
+WriteLine("return o.DataServices.GetModel(o);");
+PopIndent();
+WriteLine("}");
+ClearIndent();
+#>        
 
         /// <summary>
         /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
         /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static Task<<#= Source.Name #>> LoadAsync(<#= BuildArguments(pks) #>)
-        {
 <#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return Task.FromResult(o);
-        }
+ClearIndent();
+PushIndent(Tabs(2));
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("/// <param name=\"" + ToArgument(pkp.Name) + "\">Identification of the current <b>Tenant</b></param>");
+}
+foreach (var pk in pks) {
+    WriteLine("/// <param name=\"" + ToArgument(pk.Name) + "\">" + (pk.Summary ?? string.Empty) + "</param>");
+}
+Write("public static Task<" + Source.Name + "> LoadAsync(");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    Write(ToCSharpType(pkp.DataType, pkp.Mandatory) + " " + ToArgument(pkp.Name) + ", ");
+}
+Write(BuildArguments(pks));
+WriteLine(")");
+WriteLine("{");
+PushIndent(Tabs(1));
+WriteLine(Source.Name + " o = ApplicationContext.Current.GetObject<" + Source.Name + ">();");
+if (pkp != null && pkp.PrimaryKey == "0") {
+    WriteLine("o." + pkp.Name + " = " + ToArgument(pkp.Name) + ";");
+}
+foreach (var pk in pks) {
+    WriteLine("o." + pk.Name + " = " + ToArgument(pk.Name) + ";");
+}
+WriteLine("return Task.FromResult(o.DataServices.GetModel(o));");
+PopIndent();
+WriteLine("}");
+ClearIndent();
+#>
 
         #endregion
 
@@ -589,18 +610,10 @@ ClearIndent();
         /// Checks if <paramref name="obj"/> is equals to this object.
         /// </summary>
         /// <param name="obj">An object to compare with this object.</param>
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as <#= Source.Name #>);
-        }
+        public override bool Equals(object obj) => Equals(obj as <#= Source.Name #>);
 
-        /// <summary>
-        /// Not required, implemented to avoid warnings, returns base.GetHasCode().
-        /// </summary>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        /// <summary>Not required, implemented to avoid warnings, returns base.GetHasCode().</summary>
+        public override int GetHashCode() => base.GetHashCode();
 
         #endregion
 <# } #>
