@@ -22,7 +22,13 @@
     string tmp;
     string summary;
     string returnType;
+    string fieldName;
+    string entityName;
+    string propertyName;
     EntityProperty property;
+    NavigationalProperty navigationalProperty;
+
+    entityName = RemoveHintPrefix(Source.Name ?? "");
 
     var primaryKeys = GetPrimaryKeyProperties(Source);
     var hasPK = primaryKeys.Any();
@@ -58,9 +64,9 @@
     WriteSummary(1, summary);
     WriteRemarks(1, Source.Remarks);
 
-    Write(BuildModifier(Source.Access) + " partial class " + (Source.Name ?? "") + " : DataModel");
+    Write(BuildModifier(Source.Access) + " partial class " + entityName + " : DataModel");
     if (hasPK) {
-        Write(", IEquatable<" + (Source.Name ?? "") + ">");
+        Write(", IEquatable<" + entityName + ">");
     }
     WriteLine("{");
 
@@ -69,20 +75,23 @@
     PushIndent(Tabs(2));
     for (int i = 0; i < Source.Properties.Count; i++) {
         property = Source.Properties[i];
+        fieldName = RemoveHintPrefix(property.FieldName ?? "");
+        propertyName = RemoveHintPrefix(property.Name ?? "");
 
         if (i > 0) {
             WriteLine("");
         }
-        WriteLine(ToCSharpType(property.DataType, property.Mandatory) + " " + (property.FieldName ?? "") + ";");
+        WriteLine(ToCSharpType(property.DataType, property.Mandatory) + " " + fieldName + ";");
 
         WriteSummary(2, property.Summary);
 
+        // IDataProperty attribute
         switch (property.DataType) {
         case DataType.BigInt:
         case DataType.Integer:
         case DataType.SmallInt:
         case DataType.TinyInt:
-            Write("[IntegerDataProperty(\"" + property.Name + "\", DbType." + Convert.ToString(property.DataType));
+            Write("[IntegerDataProperty(\"" + propertyName + "\", DbType." + Convert.ToString(property.DataType));
             if (!string.IsNullOrWhiteSpace(property.MinValue)) { Write(", MinValue = " + property.MinValue); }
             if (!string.IsNullOrWhiteSpace(property.MaxValue)) { Write(", MaxValue = " + property.MaxValue); }
             if (property.PositiveOnly) { Write(", PositiveOnly = true"); }
@@ -92,13 +101,13 @@
         case DataType.NText:
         case DataType.Text:
             if (property.IsPrimaryKeyText) {
-                Write("[PrimaryKeyTextDataProperty(\"" + property.Name + "\"");
+                Write("[PrimaryKeyTextDataProperty(\"" + propertyName + "\"");
             }
             else if (property.IsMail) {
-                Write("[EmailTextDataProperty(\"" + property.Name + "\"");
+                Write("[EmailTextDataProperty(\"" + propertyName + "\"");
             }
             else {
-                Write("[TextDataProperty(\"" + property.Name + "\"");
+                Write("[TextDataProperty(\"" + propertyName + "\"");
             }
             Write(", DbType." + Convert.ToString(property.DataType));
             if (!string.IsNullOrWhiteSpace(property.MinLength)) { Write(", MinLength = " + property.MinLength); }
@@ -106,7 +115,7 @@
             if (!string.IsNullOrWhiteSpace(property.InvalidChars)) { Write(", InvalidChars = \"" + property.InvalidChars + "\""); }
             break;
         case DataType.Decimal:
-            Write("[DecimalDataProperty(\"" + property.Name + "\", DbType." + Convert.ToString(property.DataType));
+            Write("[DecimalDataProperty(\"" + propertyName + "\", DbType." + Convert.ToString(property.DataType));
             if (!string.IsNullOrWhiteSpace(property.MinValue)) { Write(", MinValue = " + property.MinValue); }
             if (!string.IsNullOrWhiteSpace(property.MaxValue)) { Write(", MaxValue = " + property.MaxValue); }
             if (property.PositiveOnly) { Write(", PositiveOnly = true"); }
@@ -126,14 +135,14 @@
             }
             break;
         case DataType.Float:
-            Write("[FloatDataProperty(\"" + property.Name + "\", DbType." + Convert.ToString(property.DataType));
+            Write("[FloatDataProperty(\"" + propertyName + "\", DbType." + Convert.ToString(property.DataType));
             if (!string.IsNullOrWhiteSpace(property.MinValue)) { Write(", MinValue = " + property.MinValue); }
             if (!string.IsNullOrWhiteSpace(property.MaxValue)) { Write(", MaxValue = " + property.MaxValue); }
             if (property.PositiveOnly) { Write(", PositiveOnly = true"); }
             break;
         default:
             // default is for Blob, Boolean, DateTime, Guid and TimeSpan.
-            Write("[GenericDataProperty(\"" + property.Name + "\", DbType." + Convert.ToString(property.DataType));
+            Write("[GenericDataProperty(\"" + propertyName + "\", DbType." + Convert.ToString(property.DataType));
             break;
         }
 
@@ -150,10 +159,10 @@
 
         if (!string.IsNullOrWhiteSpace(modelLabelsType))
         {
-            Write(", Caption = \"" + (Source.Name ?? "") + (property.Name ?? "") + "Caption\"");
-            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + (Source.Name ?? "") + (property.Name ?? "") + "Hint\""); }
-            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + (Source.Name ?? "") + (property.Name ?? "") + "RequiredMessage\""); }
-            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + (Source.Name ?? "") + (property.Name ?? "") + "InvalidContentMessage\""); }
+            Write(", Caption = \"" + entityName + propertyName + "Caption\"");
+            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + entityName + propertyName + "Hint\""); }
+            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + entityName + propertyName + "RequiredMessage\""); }
+            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + entityName + propertyName + "InvalidContentMessage\""); }
             Write(", ResourceType = typeof(" + modelLabelsType + ")");
         }
         else 
@@ -165,10 +174,139 @@
         }
         WriteLine(")]");
 
-        // continue from here
+        // DataAnnotation attributes
+        if (!string.IsNullOrWhiteSpace(property.MandatoryMessage) && (IsPrimaryKey(property) || property.Mandatory))
+        {
+            if (!string.IsNullOrWhiteSpace(modelLabelsType)) {
+                Write("[Required(ErrorMessageResourceName = \"" + entityName + propertyName + "RequiredMessage\"");
+                WriteLine(", ErrorMessageResourceType = typeof(" + modelLabelsType + "))]");
+            }
+            else {
+                WriteLine("[Required(ErrorMessage = \"" + property.MandatoryMessage + "\")]");
+            }
+        }
 
+        if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage) && (
+            property.DataType == DataType.Clob || 
+            property.DataType == DataType.NClob || 
+            property.DataType == DataType.NText || 
+            property.DataType == DataType.Text))
+        {
+            int minlen = 0;
+            int maxlen = 0;
+            if (!string.IsNullOrWhiteSpace(property.MinLength)) {
+                Int32.TryParse(property.MinLength, out minlen);
+            }
+            if (!string.IsNullOrWhiteSpace(property.MaxLength)) {
+                Int32.TryParse(property.MaxLength, out maxlen);
+            }
 
+            if (maxlen > 0)
+            {
+                Write("[StringLength(" + Convert.ToString(maxlen));
+                if (!string.IsNullOrWhiteSpace(modelLabelsType)) 
+                {
+                    Write(", ErrorMessageResourceName = \"" + entityName + propertyName + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType + ")");
+                }
+                else 
+                {
+                    Write(", ErrorMessage = \"" + property.InvalidContentMessage + "\"");
+                }
+                if (minlen > 0) {
+                    Write(", MinimumLength = " + Convert.ToString(minlen));
+                }
+                WriteLine(")]");
+            }
+        }
+
+        // The property
+        if (property.DataType == DataType.Blob && string.Equals("byte[]", property.CastDataType))
+        {
+            WriteLine(BuildModifier(property.Access) + " byte[] " + propertyName);
+            WriteLine("{");
+            PushIndent(Tabs(1));
+
+            WriteLine("get { return " + fieldName + "; }");
+            WriteLine("set");
+            WriteLine("{");
+            PushIndent(Tabs(1));
+            WriteLine(fieldName + " = value;");
+            WriteLine("NotifyPropertyChanged(" + fieldName + ");");
+            PopIndent();
+            WriteLine("}");
+            
+            PopIndent();
+            WriteLine("}");
+        }
+        else if (property.DataType == DataType.Blob)
+        {
+            WriteLine(BuildModifier(property.Access) + " BinaryAttachment " + propertyName);
+            WriteLine("{");
+            PushIndent(Tabs(1));
+
+            // get
+            WriteLine("get");
+            WriteLine("{");
+            PushIndent(Tabs(1));
+            WriteLine("if (" + fieldName + " != null && " + fieldName + ".Length > 0)");
+            WriteLine(Tabs(1) + "return new BinaryAttachment(" + fieldName + ");");
+            WriteLine("return null;");
+            PopIndent();
+            WriteLine("}");
+
+            // set
+            WriteLine("set");
+            WriteLine("{");
+            PushIndent(Tabs(1));
+            WriteLine("if (value == null)");
+            WriteLine(Tabs(1) + fieldName + " = null;");
+            WriteLine("else");
+            WriteLine(Tabs(1) + fieldName + " = value.BinaryData;")
+            WriteLine("NotifyPropertyChanged(" + fieldName + ");");
+            PopIndent();
+            WriteLine("}");
+            
+            PopIndent();
+            WriteLine("}");
+        }
+        else
+        {
+            returnType = string.IsNullOrWhiteSpace(property.CastDataType)
+                ? ToCSharpType(property.DataType, property.Mandatory)
+                : property.CastDataType;
+
+            WriteLine(BuildModifier(property.Access) + " " + returnType + " " + propertyName);
+            WriteLine("{");
+            PushIndent(Tabs(1));
+
+            tmp = string.IsNullOrWhiteSpace(property.CastDataType)
+                ? fieldName : "(" + property.CastDataType + ")" + fieldName;
+
+            WriteLine("get { return " + tmp + "; }");
+            WriteLine("set");
+            WriteLine("{");
+            PushIndent(Tabs(1));
+
+            tmp = string.IsNullOrWhiteSpace(property.CastDataType)
+                ? "value"
+                : "(" + ToCSharpType(property.DataType, property.Mandatory) + ")value";
+
+            WriteLine(fieldName + " = " + tmp + ";");
+            WriteLine("NotifyPropertyChanged(" + fieldName + ");");
+            PopIndent();
+            WriteLine("}");
+            PopIndent();
+            WriteLine("}");
+        }
     }
+
+    WriteLine("");
+    WriteLine("/// <summary>");
+    WriteLine("/// Whether validation must be enforced.");
+    WriteLine("/// </summary>");
+    WriteLine("[Editable(false)]");
+    WriteLine("public override bool EnforceModelValidation => " + (Source.EnforceModelValidation ? "true;" : "false;"));
 
     // constructors
     if (kasPK)
@@ -200,6 +338,108 @@
         WriteLine("}");
     }
 
+    // navigational properties
+    ClearIndent();
+    PushIndent(Tabs(2));
+    for (int i = 0; i < Source.NavigationalProperties.Count; i++) {
+        navigationalPropery = Source.NavigationalProperties[i];
+
+        if (i > 0) {
+            WriteLine("");
+        }
+
+        returnType = property.IsSingle 
+            ? property.DataModelType ?? ""
+            : "IEnumerable<" + (property.DataModelType ?? "") + ">";
+
+        WriteLine(returnType + " " + ToFieldName(property.Name) + ";");
+        WriteSummary(2, property.Summary);
+        if (property.IsParent) { 
+            WriteLine("[ParentNavigationalProperty]");
+        }
+        WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
+        WriteLine("{");
+        PushIndent(Tabs(1));
+
+        // getter continue...
+
+        WriteLine("set { " + ToFieldName(property.Name) + " = value; }");
+        PopIndent();
+        WriteLine("}");
+    }
+
+    if (hasPK) 
+    {
+        ClearIndent();
+        PushIndent(Tabs(2));
+        WriteLine("");
+        WriteLine("#region IEquatable<" + entityName + "> implementation.");
+        
+        WriteLine("");
+        WriteLine("/// <summary>");
+        WriteLine("/// Checks if <paramref name=\"other\"/> is equals to this instance.");
+        WriteLine("/// </summary>");
+        WriteLine("public bool Equals(" + entityName + " other)");
+        WriteLine("{");
+        PushIndent(Tabs(1));
+
+        WriteLine("if (other == null) return false;");
+        WriteLine("else");
+        WriteLine("{");
+        PushIndent(Tabs(1));
+
+        sep = "";
+        foreach (var pk in primaryKeys) {
+            propertyName = RemoveHintPrefix(pk.Name);
+
+            if (string.IsNullOrWhiteSpace(sep)) {
+                Write("return ");
+            }
+            Write(sep);
+
+            if (pk.DataType == DataType.NText || pk.DataType == DataType.Text) {
+                Write("string.Equals(" + propertyName + ", other." + propertyName + ", StringComparison.OrdinalIgnoreCase)");
+            }
+            else {
+                Write("(" + propertyName + " == other." + propertyName + ")");
+            }
+
+            if (pk.Equals(pks.Last())) {
+                WriteLine(";");
+            }
+            else {
+                WriteLine("");
+            }
+
+            if (string.IsNullOrWhiteSpace(sep)) { 
+                sep = "&& "; 
+                PushIndent(Tabs(1));
+            }
+        }
+
+        ClearIndent();
+        PushIndent(Tabs(3));
+        WriteLine("}");
+
+        ClearIndent();
+        PushIndent(Tabs(2));
+        WriteLine("}");
+
+        WriteLine("");
+        WriteLine("/// <summary>");
+        WriteLine("/// Checks if <paramref name="obj"/> is equals to this instance.");
+        WriteLine("/// </summary>");
+        WriteLine("public override bool Equals(object obj) => Equals(obj as " + entityName + ");");
+
+        WriteLine("/// <summary>Not required, implemented to avoid warnings, returns base.GetHasCode().</summary>");
+        WriteLine("public override int GetHashCode() => base.GetHashCode();");
+
+        ClearIndent();
+        PushIndent(Tabs(2));
+        WriteLine("");
+        WriteLine("#endregion");
+    }
+
     // class.
     ClearIndent();
     PushIndent(Tabs(1));
@@ -211,166 +451,8 @@
 #>
 
 <# 
-
-// entity properties
-foreach (var property in Source.Properties) 
-{ 
-
-
-    if (     !string.IsNullOrWhiteSpace(property.MandatoryMessage)
-        && ((!string.IsNullOrWhiteSpace(property.PrimaryKey) && property.PrimaryKey != "0") || property.Mandatory)) 
-    {
-        if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) {
-            Write("[Required(ErrorMessageResourceName = \"" + Source.Name + property.Name + "MandatoryMessage\"");
-            WriteLine(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + "))]");
-        }
-        else {
-            WriteLine("[Required(ErrorMessage = \"" + property.MandatoryMessage + "\")]");
-        }
-    }
-
-    if (   property.DataType == DataType.Clob 
-        || property.DataType == DataType.NClob 
-        || property.DataType == DataType.NText 
-        || property.DataType == DataType.Text)
-    {
-        if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage))
-        {
-            int minlen = 0;
-            int maxlen = 0;
-            if (!string.IsNullOrWhiteSpace(property.MinLength)) {
-                Int32.TryParse(property.MinLength, out minlen);
-            }
-            if (!string.IsNullOrWhiteSpace(property.MaxLength)) {
-                Int32.TryParse(property.MaxLength, out maxlen);
-            }
-
-            if (maxlen > 0)
-            {
-                Write("[StringLength(" + Convert.ToString(maxlen));
-                if (modelLabelsType != null && !string.IsNullOrWhiteSpace(modelLabelsType.Value)) 
-                {
-                    Write(", ErrorMessageResourceName = \"" + Source.Name + property.Name + "InvalidContentMessage\"");
-                    Write(", ErrorMessageResourceType = typeof(" + modelLabelsType.Value + ")");
-                }
-                else 
-                {
-                    Write(", ErrorMessage = \"" + property.InvalidContentMessage + "\"");
-                }
-                if (minlen > 0) {
-                    Write(", MinimumLength = " + Convert.ToString(minlen));
-                }
-                WriteLine(")]");
-            }
-        }
-    }
-
-    if (property.DataType == DataType.Blob && string.Equals("byte[]", property.CastDataType))
-    {
-        WriteLine(BuildModifier(property.Access) + " byte[] " + property.Name);
-        WriteLine("{");
-        PushIndent(Tabs(1));
-
-        // get
-        WriteLine("get { return " + property.FieldName + "; }");
-
-        // set
-        WriteLine("set");
-        WriteLine("{");
-        PushIndent(Tabs(1));
-        WriteLine(property.FieldName + " = value;");
-        WriteLine("NotifyPropertyChanged(" + property.FieldName + ");");
-        PopIndent();
-        WriteLine("}");
-        
-        PopIndent();
-        WriteLine("}");
-    }
-    else if (property.DataType == DataType.Blob)
-    {
-        WriteLine(BuildModifier(property.Access) + " BinaryAttachment " + property.Name);
-        WriteLine("{");
-        PushIndent(Tabs(1));
-
-        // get
-        WriteLine("get");
-        WriteLine("{");
-        PushIndent(Tabs(1));
-        WriteLine("if (" + property.FieldName + " == null || " + property.FieldName + ".Length == 0) return null;");
-        WriteLine("else return new BinaryAttachment(" + property.FieldName + ");");
-        PopIndent();
-        WriteLine("}");
-
-        // set
-        WriteLine("set");
-        WriteLine("{");
-        PushIndent(Tabs(1));
-        WriteLine("if (value == null) " + property.FieldName + " = null;");
-        WriteLine("else " + property.FieldName + " = value.BinaryData;");
-        WriteLine("NotifyPropertyChanged(" + property.FieldName + ");");
-        PopIndent();
-        WriteLine("}");
-        
-        PopIndent();
-        WriteLine("}");
-    }
-    else
-    {
-        returnType = string.IsNullOrWhiteSpace(property.CastDataType)
-            ? ToCSharpType(property.DataType, property.Mandatory)
-            : property.CastDataType;
-
-        WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
-        WriteLine("{");
-        PushIndent(Tabs(1));
-
-        tmp = string.IsNullOrWhiteSpace(property.CastDataType)
-            ? property.FieldName
-            : "(" + property.CastDataType + ")" + property.FieldName;
-
-        WriteLine("get { return " + tmp + "; }");
-        WriteLine("set");
-        WriteLine("{");
-        PushIndent(Tabs(1));
-
-        tmp = string.IsNullOrWhiteSpace(property.CastDataType)
-            ? "value"
-            : "(" + ToCSharpType(property.DataType, property.Mandatory) + ")value";
-
-        WriteLine(property.FieldName + " = " + tmp + ";");
-        WriteLine("NotifyPropertyChanged(" + property.FieldName + ");");
-        PopIndent();
-        WriteLine("}");
-        PopIndent();
-        WriteLine("}");
-    }
-} 
-// end of entity properties
-
-// navigational properties
 foreach (var property in Source.NavigationalProperties)
 {
-    ClearIndent();
-
-    returnType = property.DataModelType;
-    if (!property.IsSingle) 
-    {
-        returnType = "IEnumerable<" + returnType + ">";
-    }
-    
-    WriteLine(string.Empty);
-    WriteLine(Tabs(2) + returnType + " " + ToFieldName(property.Name) + ";");
-
-    WriteSummary(2, property.Summary);
-
-    PushIndent(Tabs(2));
-
-    if (property.IsParent) { WriteLine("[ParentNavigationalProperty]"); }
-
-    WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
-    WriteLine("{");
-    PushIndent(Tabs(1));
-
     // getter
     WriteLine("get");
     WriteLine("{");
@@ -483,136 +565,13 @@ foreach (var property in Source.NavigationalProperties)
     PopIndent();
     WriteLine("}");
 
-    // setter
-    WriteLine("set { " + ToFieldName(property.Name) + " = value; }");
-
-    PopIndent();
-    WriteLine("}");
 }
-// end of  navigational properties.
-
-ClearIndent();
 #>
 
 
-        /// <summary>
-        /// Whether model validation must be enforced.
-        /// </summary>
-        [Editable(false)]
-        public override bool EnforceModelValidation => <#= (Source.EnforceModelValidation ? "true" : "false") #>;
 
-<# if (pks.Any()) { #>
-        
-        #region Static loaders
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
-        /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static <#= Source.Name #> Load(<#= BuildArguments(pks) #>)
-        {
-<#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return o;
-        }
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="<#= Source.Name #>"/> by loading the data from the underlaying repository.
-        /// </summary>
-<# foreach (var pk in pks) { #>
-        /// <param name="<#= ToArgument(pk.Name) #>"><#= pk.Summary ?? string.Empty #></param>
-<# } #>
-        public static Task<<#= Source.Name #>> LoadAsync(<#= BuildArguments(pks) #>)
-        {
-<#
-sep = string.Empty;
-tmp = string.Empty; 
-foreach (var pk in pks) 
-{ 
-    tmp += sep + ToArgument(pk.Name);
-    if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-} #>
-            <#= Source.Name #> o;
-            o = ApplicationContext.Current.GetObject<<#= Source.Name #>>(<#= tmp #>);
-            o = o.DataServices.GetModel(o);
-            return Task.FromResult(o);
-        }
 
-        #endregion
 
-        #region IEquatable<<#= Source.Name#>> implementation.
 
-        /// <summary>
-        /// Checks if <paramref name="other"/> is equals to this object.
-        /// </summary>
-        public bool Equals(<#= Source.Name #> other)
-        {
-            if (other == null) return false;
-            else
-            {
-<#
-ClearIndent();
-PushIndent(Tabs(4));
-
-sep = string.Empty;
-tmp = string.Empty;
-foreach (var pk in pks) 
-{
-    if (string.IsNullOrWhiteSpace(sep)) 
-    {
-        Write("return ");
-    }
-    Write(sep);
-
-    if (pk.DataType == DataType.NText || pk.DataType == DataType.Text)
-    {
-        Write("string.Equals(" + pk.Name + ", other." + pk.Name + ", StringComparison.OrdinalIgnoreCase)");
-    }
-    else
-    {
-        Write("(" + pk.Name + " == other." + pk.Name + ")");
-    }
-
-    if (pk.Equals(pks.Last())) 
-    {
-        WriteLine(";");
-    }
-    else
-    {
-        WriteLine(string.Empty);
-    }
-
-    if (string.IsNullOrWhiteSpace(sep)) 
-    { 
-        sep = "&& "; 
-        PushIndent(Tabs(1));
-    }
-}
-
-ClearIndent();
-#>
-            }
-        }
-
-        /// <summary>
-        /// Checks if <paramref name="obj"/> is equals to this object.
-        /// </summary>
-        /// <param name="obj">An object to compare with this object.</param>
-        public override bool Equals(object obj) => Equals(obj as <#= Source.Name #>);
-
-        /// <summary>Not required, implemented to avoid warnings, returns base.GetHasCode().</summary>
-        public override int GetHashCode() => base.GetHashCode();
-
-        #endregion
-<# } #>
