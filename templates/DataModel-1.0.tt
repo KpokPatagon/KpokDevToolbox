@@ -12,7 +12,6 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="KpokEntityTool.Models" #>
-<#@ include file=".\Lib\Commons.tt" #>
 <#@ parameter type="KpokEntityTool.Models.Entity" name="Source" #>
 <#@ parameter type="System.String" name="TemplateFileName" #>
 <#@ parameter type="System.String" name="SourceFileName" #>
@@ -348,24 +347,15 @@
             WriteLine("");
         }
 
-        returnType = property.IsSingle 
-            ? property.DataModelType ?? ""
-            : "IEnumerable<" + (property.DataModelType ?? "") + ">";
+        returnType = navigationalPropery.IsSingle 
+            ? navigationalPropery.DataModelType ?? ""
+            : "ICollection<" + (navigationalPropery.DataModelType ?? "") + ">";
 
-        WriteLine(returnType + " " + ToFieldName(property.Name) + ";");
-        WriteSummary(2, property.Summary);
-        if (property.IsParent) { 
+        WriteSummary(2, navigationalPropery.Summary);
+        if (navigationalPropery.IsParent) { 
             WriteLine("[ParentNavigationalProperty]");
         }
-        WriteLine(BuildModifier(property.Access) + " " + returnType + " " + property.Name);
-        WriteLine("{");
-        PushIndent(Tabs(1));
-
-        // getter continue...
-
-        WriteLine("set { " + ToFieldName(property.Name) + " = value; }");
-        PopIndent();
-        WriteLine("}");
+        WriteLine(BuildModifier(navigationalPropery.Access) + " " + returnType + " " + navigationalPropery.Name + " get; set; }");
     }
 
     if (hasPK) 
@@ -448,130 +438,4 @@
     // namespace.
     ClearIndent();
     WriteLine("}");
-#>
-
-<# 
-foreach (var property in Source.NavigationalProperties)
-{
-    // getter
-    WriteLine("get");
-    WriteLine("{");
-    PushIndent(Tabs(1));
-
-    cnt = 0;
-    tmp = string.Empty;
-    sep = string.Empty;
-    
-    foreach (var par in property.ParameterMappings)
-    {
-        var p = Source.Properties.FirstOrDefault(x => x.Name == par.PropertyName);
-        if (p != null && !IsBoolean(p))
-        {
-            cnt++;
-
-            tmp += sep + p.FieldName;
-
-            if (IsNullable(p)) 
-            {
-                tmp += " == null";
-            }
-            else if (IsDateTime(p)) 
-            {
-                tmp += " == DateTime.MinValue";
-            }
-            else if (IsDecimal(p)) 
-            {
-                tmp += (p.PositiveOnly ? " <= " : " < ") + "0m";
-            }
-            else // if (IsInteger(p))
-            {
-                tmp += (p.PositiveOnly ? " <= " : " < ") + "0";
-            }
-            
-            if (string.IsNullOrWhiteSpace(sep)) { sep = " && "; }
-        }
-    }
-
-    if (cnt > 0 && cnt == property.ParameterMappings.Count)
-    {
-        WriteLine("if (" + tmp + ")");
-        WriteLine("{");
-        PushIndent(Tabs(1));
-        if (property.IsSingle) 
-        {
-            WriteLine("return null;");
-        }
-        else 
-        { 
-            WriteLine("return new " + property.DataModelType + "[0];");
-        }
-        PopIndent();
-        WriteLine("}");
-        WriteLine(string.Empty);
-    }
-
-    WriteLine("if (" + ToFieldName(property.Name) + " == null)");
-    WriteLine("{");
-    PushIndent(Tabs(1));
-
-    if (   string.IsNullOrWhiteSpace(property.DataServiceType)
-        || string.IsNullOrWhiteSpace(property.DataServiceFilter))
-    {
-        Write(ToFieldName(property.Name) + " = " + property.DataModelType + ".Load(");
-        
-        sep = string.Empty;
-        foreach (var par in property.ParameterMappings) 
-        {
-            Write(sep + par.ParameterName + ": " + par.PropertyName);
-            if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-        }
-        WriteLine(");");
-    }
-    else
-    {
-        WriteLine(property.DataServiceType + " ds = ApplicationContext.Current.GetObject<" + property.DataServiceType + ">();");
-        
-        if (property.DataServiceFilterIsAsync)
-        {
-            Write("Task<" + returnType + "> task = ");
-        }
-        else
-        {
-            Write(ToFieldName(property.Name) + " = ");
-        }
-        
-        Write("ds." + property.DataServiceFilter + "(");
-        
-        sep = string.Empty;
-        foreach (var par in property.ParameterMappings) 
-        {
-            Write(sep + par.ParameterName + ": " + par.PropertyName);
-            if (string.IsNullOrWhiteSpace(sep)) { sep = ", "; }
-        }
-        WriteLine(");");
-
-        if (property.DataServiceFilterIsAsync)
-        {
-            WriteLine("task.Wait();");
-            WriteLine(ToFieldName(property.Name) + " = task.Result;");
-        }
-    }
-
-    PopIndent();
-    WriteLine("}");
-
-    WriteLine("return " + ToFieldName(property.Name) + ";");
-
-    PopIndent();
-    WriteLine("}");
-
-}
-#>
-
-
-
-
-
-
-
-
+#><#@ include file=".\Lib\Commons.tt" #>
