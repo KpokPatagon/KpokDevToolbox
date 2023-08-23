@@ -20,14 +20,14 @@
     string sep;
     string tmp;
     string summary;
-    string returnType;
+    string className;
     string fieldName;
-    string entityName;
+    string returnType;
     string propertyName;
     EntityProperty property;
     NavigationalProperty navigationalProperty;
 
-    entityName = RemoveHintPrefix(Source.Name ?? "");
+    className = RemoveHintPrefix(Source.Name ?? "");
 
     var primaryKeys = GetPrimaryKeyProperties(Source);
     var hasPK = primaryKeys.Any();
@@ -35,12 +35,12 @@
     var modelLabelsType = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsType", "");
     var modelLabelsNamespace = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsNamespace", "");
 
-    WriteLine("Inetdev.Data");
+    WriteLine("Inetdev.Data;");
     WriteLine("using System;");
-    WriteLine("using System.Linq");
-    WriteLine("using System.Threading.Tasks");
-    WriteLine("using System.Collections.Generic");
-    WriteLine("using System.ComponentModel.DataAnnotations");
+    WriteLine("using System.Linq;");
+    WriteLine("using System.Threading.Tasks;");
+    WriteLine("using System.Collections.Generic;");
+    WriteLine("using System.ComponentModel.DataAnnotations;");
 
     if (!string.IsNullOrWhiteSpace(modelLabelsNamespace)) {
         WriteLine("");
@@ -63,9 +63,9 @@
     WriteSummary(1, summary);
     WriteRemarks(1, Source.Remarks);
 
-    Write(BuildModifier(Source.Access) + " partial class " + entityName + " : DataModel");
+    Write(BuildModifier(Source.Access) + " partial class " + className + " : DataModel");
     if (hasPK) {
-        Write(", IEquatable<" + entityName + ">");
+        Write(", IEquatable<" + className + ">");
     }
     WriteLine("{");
 
@@ -80,7 +80,7 @@
         if (i > 0) {
             WriteLine("");
         }
-        WriteLine(ToCSharpType(property.DataType, property.Mandatory) + " " + fieldName + ";");
+        WriteLine("private " + ToCSharpType(property.DataType, property.Mandatory) + " " + fieldName + ";");
 
         WriteSummary(2, property.Summary);
 
@@ -158,10 +158,10 @@
 
         if (!string.IsNullOrWhiteSpace(modelLabelsType))
         {
-            Write(", Caption = \"" + entityName + propertyName + "Caption\"");
-            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + entityName + propertyName + "Hint\""); }
-            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + entityName + propertyName + "RequiredMessage\""); }
-            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + entityName + propertyName + "InvalidContentMessage\""); }
+            Write(", Caption = \"" + className + propertyName + "Caption\"");
+            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + className + propertyName + "Hint\""); }
+            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + className + propertyName + "RequiredMessage\""); }
+            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + className + propertyName + "InvalidContentMessage\""); }
             Write(", ResourceType = typeof(" + modelLabelsType + ")");
         }
         else 
@@ -177,7 +177,7 @@
         if (!string.IsNullOrWhiteSpace(property.MandatoryMessage) && (IsPrimaryKey(property) || property.Mandatory))
         {
             if (!string.IsNullOrWhiteSpace(modelLabelsType)) {
-                Write("[Required(ErrorMessageResourceName = \"" + entityName + propertyName + "RequiredMessage\"");
+                Write("[Required(ErrorMessageResourceName = \"" + className + propertyName + "RequiredMessage\"");
                 WriteLine(", ErrorMessageResourceType = typeof(" + modelLabelsType + "))]");
             }
             else {
@@ -205,7 +205,7 @@
                 Write("[StringLength(" + Convert.ToString(maxlen));
                 if (!string.IsNullOrWhiteSpace(modelLabelsType)) 
                 {
-                    Write(", ErrorMessageResourceName = \"" + entityName + propertyName + "InvalidContentMessage\"");
+                    Write(", ErrorMessageResourceName = \"" + className + propertyName + "InvalidContentMessage\"");
                     Write(", ErrorMessageResourceType = typeof(" + modelLabelsType + ")");
                 }
                 else 
@@ -363,13 +363,13 @@
         ClearIndent();
         PushIndent(Tabs(2));
         WriteLine("");
-        WriteLine("#region IEquatable<" + entityName + "> implementation.");
+        WriteLine("#region IEquatable<" + className + "> implementation.");
         
         WriteLine("");
         WriteLine("/// <summary>");
         WriteLine("/// Checks if <paramref name=\"other\"/> is equals to this instance.");
         WriteLine("/// </summary>");
-        WriteLine("public bool Equals(" + entityName + " other)");
+        WriteLine("public bool Equals(" + className + " other)");
         WriteLine("{");
         PushIndent(Tabs(1));
 
@@ -419,7 +419,7 @@
         WriteLine("/// <summary>");
         WriteLine("/// Checks if <paramref name="obj"/> is equals to this instance.");
         WriteLine("/// </summary>");
-        WriteLine("public override bool Equals(object obj) => Equals(obj as " + entityName + ");");
+        WriteLine("public override bool Equals(object obj) => Equals(obj as " + className + ");");
 
         WriteLine("/// <summary>Not required, implemented to avoid warnings, returns base.GetHasCode().</summary>");
         WriteLine("public override int GetHashCode() => base.GetHashCode();");
