@@ -2,6 +2,7 @@
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="KpokEntityTool" #>
 <#@ import namespace="KpokEntityTool.Models" #>
 <#+
     // builds an argument declaration for an entity property.
@@ -344,11 +345,11 @@
     // writes a remarks documentation
 	protected virtual void WriteRemarks(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-			return;
-
         ClearIndent();
         PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <remarks>");
 		foreach (var l in text.SplitNewLine()) 
@@ -359,11 +360,11 @@
     // writes a returns documentation
 	protected virtual void WriteReturns(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-			return;
-
         ClearIndent();
         PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <returns>");
 		foreach (var l in text.SplitNewLine()) 
@@ -374,11 +375,11 @@
     // writes a summary documentation
 	protected virtual void WriteSummary(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-			return;
-
         ClearIndent();
         PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <summary>");
 		foreach (var l in text.SplitNewLine()) 

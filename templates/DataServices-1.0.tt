@@ -33,8 +33,8 @@
 
     className = RemoveHintPrefix(Source.Name ?? "");
 
-    WriteLine("Inetdev.Data;");
-    WriteLine("Inetdev.Data.Query;")
+    WriteLine("using Inetdev.Data;");
+    WriteLine("using Inetdev.Data.Query;");
     WriteLine("using System;");
     WriteLine("using System.Linq;");
     WriteLine("using System.Threading.Tasks;");
@@ -48,7 +48,7 @@
     }
 
     WriteLine("");
-    WriteLine("namespace " + (Source.Namespance ?? ""));
+    WriteLine("namespace " + (Source.Namespace ?? ""));
     WriteLine("{");
 
     summary = Source.Summary ?? "";
@@ -113,7 +113,7 @@
         Write("[\"" + (fld.FieldKey ?? "") + "\"] =");
         Write(" new Field(\"" + (fld.FieldName ?? "") + "\",");
         Write(" DbType." + fld.DataType + ",");
-        Write(" " + (!string.IsNullOrWhiteSpace(fld.PrimaryKey) ? "0" : fld.PrimaryKey) + ",");
+        Write(" " + (string.IsNullOrWhiteSpace(fld.PrimaryKey) ? "0" : fld.PrimaryKey + ","));
         Write(" AutomaticType." + fld.AutomaticType);
 
         if (i < Source.Fields.Count - 1) {
@@ -124,7 +124,8 @@
         }
     }
     PopIndent();
-    WriteLine("        }");
+    WriteLine("        };");
+    WriteLine("        return _fields;");
     WriteLine("    }");
     WriteLine("    set { _fields = value; }");
     WriteLine("}");
@@ -135,8 +136,8 @@
     WriteLine("/// </summary>");
     WriteLine("public " + className + "()");
     WriteLine("{");
-    WriteLine("    Schema = " + !string.IsNullOrWhiteSpace(Source.Schema) ? ("\"" + Source.Schema + "\";") : "null;");
-    WriteLine("    SequenceName = " + !string.IsNullOrWhiteSpace(Source.SequenceName) ? ("\"" + Source.SequenceName + "\";") : "null;");
+    WriteLine("    Schema = " + (!string.IsNullOrWhiteSpace(Source.Schema) ? "\"" + Source.Schema + "\";" : "null;"));
+    WriteLine("    SequenceName = " + (!string.IsNullOrWhiteSpace(Source.SequenceName) ? "\"" + Source.SequenceName + "\";" : "null;"));
     WriteLine("");
     WriteLine("}");
 
@@ -151,7 +152,7 @@
         ClearIndent();
         WriteLine("");
         WriteSummary(2, filter.Summary);
-        foreach (var parameter in filter.Parameters.Where(x => !string.IsNullOrWhiteSpace(parameter.Summary))) {
+        foreach (var parameter in filter.Parameters.Where(x => !string.IsNullOrWhiteSpace(x.Summary))) {
             WriteLine("/// <param name=\"" + RemoveHintPrefix(parameter.Name) + "\">" + parameter.Summary + "</param>" );
         }
 
@@ -301,7 +302,7 @@
     WriteLine("");
 
     WriteLine("/// <summary>");
-    WriteLine("/// Field key constants for <b>" + clasName + "</b>.");
+    WriteLine("/// Field key constants for <b>" + className + "</b>.");
     WriteLine("/// </summary>");
     WriteLine("public static class FKey");
     WriteLine("{");

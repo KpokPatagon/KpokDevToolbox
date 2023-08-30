@@ -16,7 +16,6 @@
 <#@ parameter type="System.String" name="TemplateFileName" #>
 <#@ parameter type="System.String" name="SourceFileName" #>
 <#
-    int cnt;
     string sep;
     string tmp;
     string summary;
@@ -35,7 +34,7 @@
     var modelLabelsType = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsType", "");
     var modelLabelsNamespace = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsNamespace", "");
 
-    WriteLine("Inetdev.Data;");
+    WriteLine("using Inetdev.Data;");
     WriteLine("using System;");
     WriteLine("using System.Linq;");
     WriteLine("using System.Threading.Tasks;");
@@ -55,7 +54,7 @@
     }
 
     WriteLine("");
-    WriteLine("namespace " + (Source.Namespance ?? ""));
+    WriteLine("namespace " + (Source.Namespace ?? ""));
     WriteLine("{");
 
     summary = Source.Summary ?? "";
@@ -67,6 +66,7 @@
     if (hasPK) {
         Write(", IEquatable<" + className + ">");
     }
+    WriteLine("");
     WriteLine("{");
 
     // properties
@@ -167,9 +167,9 @@
         else 
         {
             Write(", Caption = \"" + property.Caption + "\"");
-            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + Source.Hint + "\""); }
-            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + Source.MandatoryMessage + "\""); }
-            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + Source.InvalidContentMessage + "\""); }
+            if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + property.Hint + "\""); }
+            if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + property.MandatoryMessage + "\""); }
+            if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + property.InvalidContentMessage + "\""); }
         }
         WriteLine(")]");
 
@@ -261,7 +261,7 @@
             WriteLine("if (value == null)");
             WriteLine(Tabs(1) + fieldName + " = null;");
             WriteLine("else");
-            WriteLine(Tabs(1) + fieldName + " = value.BinaryData;")
+            WriteLine(Tabs(1) + fieldName + " = value.BinaryData;");
             WriteLine("NotifyPropertyChanged(" + fieldName + ");");
             PopIndent();
             WriteLine("}");
@@ -279,17 +279,30 @@
             WriteLine("{");
             PushIndent(Tabs(1));
 
-            tmp = string.IsNullOrWhiteSpace(property.CastDataType)
-                ? fieldName : "(" + property.CastDataType + ")" + fieldName;
+            if (HasHintPrefix(property.Name, "$(SEnum)", out tmp) && !string.IsNullOrWhiteSpace(property.CastDataType)) {
+                tmp = "(" + property.CastDataType + ")Enum.Parse(typeof(" + property.CastDataType + "), " + fieldName + ")";
+            }
+            else if (!string.IsNullOrWhiteSpace(property.CastDataType)) {
+                tmp = "(" + property.CastDataType + ")" + fieldName;
+            }
+            else {
+                tmp = fieldName;
+            }
 
             WriteLine("get { return " + tmp + "; }");
             WriteLine("set");
             WriteLine("{");
             PushIndent(Tabs(1));
 
-            tmp = string.IsNullOrWhiteSpace(property.CastDataType)
-                ? "value"
-                : "(" + ToCSharpType(property.DataType, property.Mandatory) + ")value";
+            if (HasHintPrefix(property.Name, "$(SEnum)", out tmp) && !string.IsNullOrWhiteSpace(property.CastDataType)) {
+                tmp = "Enum.GetName(value)";
+            }
+            else if (!string.IsNullOrWhiteSpace(property.CastDataType)) {
+                tmp = "(" + ToCSharpType(property.DataType, property.Mandatory) + ")value";
+            }
+            else {
+                tmp = "value";
+            }
 
             WriteLine(fieldName + " = " + tmp + ";");
             WriteLine("NotifyPropertyChanged(" + fieldName + ");");
@@ -308,7 +321,7 @@
     WriteLine("public override bool EnforceModelValidation => " + (Source.EnforceModelValidation ? "true;" : "false;"));
 
     // constructors
-    if (kasPK)
+    if (hasPK)
     {
         ClearIndent();
         PushIndent(Tabs(2));
@@ -325,7 +338,7 @@
         WriteLine("/// Initializes a new instance of <see cref=\"" + (Source.Name ?? "") + "\"/>.");
         WriteLine("/// </summary>");
         foreach (var pk in primaryKeys) {
-            WriteLine("/// <param name=\"" + ToArgumentName(pk.Name) + "\">" + (pk.summary ?? "") + "</param>");
+            WriteLine("/// <param name=\"" + ToArgumentName(pk.Name) + "\">" + (pk.Summary ?? "") + "</param>");
         }
         WriteLine("public " + (Source.Name ?? "") + "(" + BuildArguments(primaryKeys) + ")");
         WriteLine("{");
@@ -341,21 +354,21 @@
     ClearIndent();
     PushIndent(Tabs(2));
     for (int i = 0; i < Source.NavigationalProperties.Count; i++) {
-        navigationalPropery = Source.NavigationalProperties[i];
+        navigationalProperty = Source.NavigationalProperties[i];
 
         if (i > 0) {
             WriteLine("");
         }
 
-        returnType = navigationalPropery.IsSingle 
-            ? navigationalPropery.DataModelType ?? ""
-            : "ICollection<" + (navigationalPropery.DataModelType ?? "") + ">";
+        returnType = navigationalProperty.IsSingle 
+            ? navigationalProperty.DataModelType ?? ""
+            : "ICollection<" + (navigationalProperty.DataModelType ?? "") + ">";
 
-        WriteSummary(2, navigationalPropery.Summary);
-        if (navigationalPropery.IsParent) { 
+        WriteSummary(2, navigationalProperty.Summary);
+        if (navigationalProperty.IsParent) { 
             WriteLine("[ParentNavigationalProperty]");
         }
-        WriteLine(BuildModifier(navigationalPropery.Access) + " " + returnType + " " + navigationalPropery.Name + " get; set; }");
+        WriteLine(BuildModifier(navigationalProperty.Access) + " " + returnType + " " + navigationalProperty.Name + " get; set; }");
     }
 
     if (hasPK) 
@@ -394,7 +407,7 @@
                 Write("(" + propertyName + " == other." + propertyName + ")");
             }
 
-            if (pk.Equals(pks.Last())) {
+            if (pk.Equals(primaryKeys.Last())) {
                 WriteLine(";");
             }
             else {
@@ -417,7 +430,7 @@
 
         WriteLine("");
         WriteLine("/// <summary>");
-        WriteLine("/// Checks if <paramref name="obj"/> is equals to this instance.");
+        WriteLine("/// Checks if <paramref name=\"obj\"/> is equals to this instance.");
         WriteLine("/// </summary>");
         WriteLine("public override bool Equals(object obj) => Equals(obj as " + className + ");");
 
