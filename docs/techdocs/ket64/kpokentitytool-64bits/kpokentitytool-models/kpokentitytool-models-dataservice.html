@@ -83,12 +83,28 @@
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Alias { get; set; }</code></dd>
 </dl>
 </div>
+<div id="P:KpokEntityTool.Models.DataService.CommandBuilder" class="mb-5">
+    <h3 class="lead text-info">CommandBuilder</h3>
+    <p>The name of the IDbCmdBuilder for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> CommandBuilder { get; set; }</code></dd>
+</dl>
+</div>
 <div id="P:KpokEntityTool.Models.DataService.DataModelAuditor" class="mb-5">
     <h3 class="lead text-info">DataModelAuditor</h3>
-    <p>DataModelAuditor object name.</p>
+    <p>The name of the IDataModelAuditor for this service.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataModelAuditor { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.DataModelCommandBuilder" class="mb-5">
+    <h3 class="lead text-info">DataModelCommandBuilder</h3>
+    <p>The name of the IDataModelCmdBuilder for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataModelCommandBuilder { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.DataService.DesignerTemplate" class="mb-5">
@@ -123,6 +139,14 @@
     <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-filtercollection.html">FilterCollection</a> Filters { get; set; }</code></dd>
 </dl>
 </div>
+<div id="P:KpokEntityTool.Models.DataService.Identity" class="mb-5">
+    <h3 class="lead text-info">Identity</h3>
+    <p>The name of the IIdentity service for identity generation.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Identity { get; set; }</code></dd>
+</dl>
+</div>
 <div id="P:KpokEntityTool.Models.DataService.Name" class="mb-5">
     <h3 class="lead text-info">Name</h3>
     <p>Name of the entity (class name).</p>
@@ -137,6 +161,14 @@
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Namespace { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Numerator" class="mb-5">
+    <h3 class="lead text-info">Numerator</h3>
+    <p>The name of the INumerator for generation of numerator values.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Numerator { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.DataService.Release" class="mb-5">
@@ -201,6 +233,14 @@
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
     <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-templatecollection.html">TemplateCollection</a> Templates { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Validator" class="mb-5">
+    <h3 class="lead text-info">Validator</h3>
+    <p>The name of the IDataModelValidator for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Validator { get; set; }</code></dd>
 </dl>
 </div>
 <h2 id="methods" class="mt-5">Methods</h2>
@@ -283,13 +323,17 @@
     <ul style="font-size:0.8em;">
         <li><a href="#P:KpokEntityTool.Models.DataService.Access">Access</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Alias">Alias</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.CommandBuilder">CommandBuilder</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.DataModelAuditor">DataModelAuditor</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.DataModelCommandBuilder">DataModelCommandBuilder</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.DesignerTemplate">DesignerTemplate</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.ExtendedProperties">ExtendedProperties</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Fields">Fields</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Filters">Filters</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Identity">Identity</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Name">Name</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Namespace">Namespace</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Numerator">Numerator</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Release">Release</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Remarks">Remarks</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Schema">Schema</a></li>
@@ -298,6 +342,7 @@
         <li><a href="#P:KpokEntityTool.Models.DataService.Summary">Summary</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Table">Table</a></li>
         <li><a href="#P:KpokEntityTool.Models.DataService.Templates">Templates</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Validator">Validator</a></li>
     </ul>
 </li>
 <li><a href="#methods">Methods</a></li>
