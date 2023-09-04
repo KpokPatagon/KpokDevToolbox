@@ -138,7 +138,6 @@
     WriteLine("{");
     WriteLine("    Schema = " + (!string.IsNullOrWhiteSpace(Source.Schema) ? "\"" + Source.Schema + "\";" : "null;"));
     WriteLine("    SequenceName = " + (!string.IsNullOrWhiteSpace(Source.SequenceName) ? "\"" + Source.SequenceName + "\";" : "null;"));
-    WriteLine("");
     WriteLine("}");
 
     foreach (var filter in Source.Filters)

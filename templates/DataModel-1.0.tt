@@ -84,6 +84,10 @@
 
         WriteSummary(2, property.Summary);
 
+        if (property.IsPartitionKey) { 
+            WriteLine("[PartitionKey]");
+        }
+
         // IDataProperty attribute
         switch (property.DataType) {
         case DataType.BigInt:
@@ -356,19 +360,16 @@
     for (int i = 0; i < Source.NavigationalProperties.Count; i++) {
         navigationalProperty = Source.NavigationalProperties[i];
 
-        if (i > 0) {
-            WriteLine("");
-        }
-
         returnType = navigationalProperty.IsSingle 
             ? navigationalProperty.DataModelType ?? ""
             : "ICollection<" + (navigationalProperty.DataModelType ?? "") + ">";
 
+        WriteLine("");
         WriteSummary(2, navigationalProperty.Summary);
         if (navigationalProperty.IsParent) { 
             WriteLine("[ParentNavigationalProperty]");
         }
-        WriteLine(BuildModifier(navigationalProperty.Access) + " " + returnType + " " + navigationalProperty.Name + " get; set; }");
+        WriteLine(BuildModifier(navigationalProperty.Access) + " " + returnType + " " + navigationalProperty.Name + " { get; set; }");
     }
 
     if (hasPK) 
