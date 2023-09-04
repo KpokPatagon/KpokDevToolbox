@@ -35,6 +35,9 @@
     var modelLabelsNamespace = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsNamespace", "");
 
     WriteLine("using Inetdev.Data;");
+    if (!string.IsNullOrWhiteSpace(Source.DataServices)) {
+        WriteLine("using Inetdev.Data.DependencyInjection;");
+    }
     WriteLine("using System;");
     WriteLine("using System.Linq;");
     WriteLine("using System.Threading.Tasks;");
@@ -61,6 +64,10 @@
     summary += "\nRelease: " + (Source.Release ?? "");
     WriteSummary(1, summary);
     WriteRemarks(1, Source.Remarks);
+
+    if (!string.IsNullOrWhiteSpace(Source.DataServices)) {
+        WriteLine("[DataServiceType(typeof(" + Source.DataServices + "))]");
+    }
 
     Write(BuildModifier(Source.Access) + " partial class " + className + " : DataModel");
     if (hasPK) {

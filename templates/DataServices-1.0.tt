@@ -35,6 +35,7 @@
 
     WriteLine("using Inetdev.Data;");
     WriteLine("using Inetdev.Data.Query;");
+    WriteLine("using Inetdev.DependencyInjection;");
     WriteLine("using System;");
     WriteLine("using System.Linq;");
     WriteLine("using System.Threading.Tasks;");
@@ -55,6 +56,25 @@
     summary += "\nRelease: " + (Source.Release ?? "");
     WriteSummary(1, summary);
     WriteRemarks(1, Source.Remarks);
+
+    if (!string.IsNullOrWhiteSpace(Source.CommandBuilder)) {
+        WriteLine("[InjectServiceName(\"CommandBuilder\", \"" + Source.CommandBuilder + "\")]");
+    }
+    if (!string.IsNullOrWhiteSpace(Source.DataModelCommandBuilder)) {
+        WriteLine("[InjectServiceName(\"DataModelCommandBuilder\", \"" + Source.CommandBuilder + "\")]");
+    }
+    if (!string.IsNullOrWhiteSpace(Source.DataModelAuditor)) {
+        WriteLine("[InjectServiceType(\"DataModelAuditor\", typeof(" + Source.DataModelAuditor + "))]");
+    }
+    if (!string.IsNullOrWhiteSpace(Source.Identity)) {
+        WriteLine("[InjectServiceType(\"Identity\", typeof(" + Source.Identity + "))]");
+    }
+    if (!string.IsNullOrWhiteSpace(Source.Numerator)) {
+        WriteLine("[InjectServiceType(\"Numerator\", typeof(" + Source.Numerator + "))]");
+    }
+    if (!string.IsNullOrWhiteSpace(Source.Validator)) {
+        WriteLine("[InjectServiceType(\"Validator\", typeof(" + Source.Validator + "))]");
+    }
 
     WriteLine(BuildModifier(Source.Access) + " partial class " + className + " : DataService");
     WriteLine("{");
