@@ -233,7 +233,11 @@
                     {
                         pb += ToRelationalOperatorEnumText(predicate.Relation) + ", ";
                     }
-                    pb += "new PredicateColumn(Fields[FKey." + fld.FieldKey + "], \"p_" + fld.FieldName + "_" + Convert.ToString(pn++) + "\")";
+                    pb += "new PredicateColumn(Fields[FKey." + fld.FieldKey + "]";
+                    if (predicate.Operator != ComparisonOperator.In && predicate.Operator != ComparisonOperator.NotIn) {
+                        pb += ", \"p_" + fld.FieldName + "_" + Convert.ToString(pn++) + "\"";
+                    }
+                    pb += ")";
                     pb += ", ComparisonOperator." + Convert.ToString(predicate.Operator);
                     pb += ", " + predicate.Value;
                     pb += ")";

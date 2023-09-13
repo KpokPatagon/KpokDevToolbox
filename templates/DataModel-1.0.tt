@@ -291,7 +291,14 @@
             PushIndent(Tabs(1));
 
             if (HasHintPrefix(property.Name, "$(SEnum)", out tmp) && !string.IsNullOrWhiteSpace(property.CastDataType)) {
-                tmp = "(" + property.CastDataType + ")Enum.Parse(typeof(" + property.CastDataType + "), " + fieldName + ")";
+                tmp = "(string.IsNullOrWhiteSpace(" + fieldName + ")";
+                if (property.Mandatory) {
+                    tmp += " ? default(" + property.CastDataType + ")";
+                } else {
+                    tmp += " ? null";
+                }
+                tmp += " : (" + property.CastDataType + ")Enum.Parse(typeof(" + property.CastDataType + "), " + fieldName + ")";
+                tmp += ")";
             }
             else if (!string.IsNullOrWhiteSpace(property.CastDataType)) {
                 tmp = "(" + property.CastDataType + ")" + fieldName;
