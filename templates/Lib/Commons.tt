@@ -2,13 +2,38 @@
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="KpokEntityTool" #>
 <#@ import namespace="KpokEntityTool.Models" #>
 <#+
-    // returns an indentation string
-    protected virtual string Tabs(int tabs, int tablength = 4)
+    // builds an argument declaration for an entity property.
+    protected virtual string BuildArgument(EntityProperty property)
     {
-        return new string(' ', tabs * tablength);
+        string propertyName = RemoveHintPrefix(property.Name);
+        return ToCSharpType(property.DataType) + " " + ToArgumentName(propertyName);
     }
+
+    // builds an argument declaration for a data service filter.
+    protected virtual string BuildArgument(Parameter parameter)
+    {
+        string parameterName = RemoveHintPrefix(parameter.Name);
+        return parameter.DataType + " " + parameterName;
+    }
+
+    // builds a method argument list.
+    protected virtual string BuildArguments(IEnumerable<EntityProperty> properties)
+    {
+        if (properties.Any())
+            return string.Join(", ", properties.Select(p => BuildArgument(p)));
+        return "";
+    }
+
+    // builds a method argument list.
+	protected virtual string BuildArguments(IEnumerable<Parameter> parameters)
+	{
+		if (parameters.Any()) 
+            return string.Join(", ", parameters.Select(p => BuildArgument(p)));
+        return "";
+	}
 
     // returns a c# modifier string
     protected virtual string BuildModifier(AccessModifier modifier)
@@ -48,7 +73,7 @@
     {
         if (properties != null && !string.IsNullOrWhiteSpace(key))
         {
-            var p = properties.FirstOrDefault(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase));
+            var p = properties.FirstOrDefault(x => x.Key == key);
             if (p != null)
             {
                 return string.IsNullOrWhiteSpace(p.Value) ? defaultValue : p.Value;
@@ -57,21 +82,26 @@
         return defaultValue;
     }
 
-    // return a unique parameter name
-    protected virtual string GetUniqueParameterName(List<string> names, string attempted)
+    protected virtual EntityProperty[] GetPrimaryKeyProperties(Entity entity)
     {
-        if (names.Contains(attempted))
+        return entity.Properties.Where(p => IsPrimaryKey(p))
+                                .OrderBy(p => Convert.ToInt32(p.PrimaryKey))
+                                .ToArray();
+    }
+
+    // checks if attempted has the specified hint prefix and cleans the value up.
+    protected virtual bool HasHintPrefix(string attempted, string prefix, out string value)
+    {
+        value = attempted;
+        if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(attempted))
+            return false;
+        
+        if (attempted.Length > prefix.Length && attempted.StartsWith(prefix))
         {
-            int c = names.Count(x => x.StartsWith(attempted));
-            string name = string.Format("{0}{1}", attempted, c);
-            names.Add(name);
-            return name;
+            value = attempted.Substring(prefix.Length);
+            return true;
         }
-        else 
-        {
-            names.Add(attempted);
-            return attempted;
-        }
+        return false;
     }
 
     // finds out if a property is Boolean.
@@ -106,12 +136,6 @@
             || property.DataType == DataType.SmallInt
             || property.DataType == DataType.TinyInt;
     }
-
-	// finds out if a property is TimeSpan.
-	protected virtual bool IsTimeSpan(EntityProperty property)
-	{
-		return property.DataType == DataType.TimeSpan;
-	}
 
     // finds out if a property data type is of a nullable data type.
     protected virtual bool IsNullable(EntityProperty property)
@@ -168,27 +192,26 @@
         return isnullabledatatype;
     }
 
-    // checks if attempted has the specified hint prefix and cleans the value up.
-    protected virtual bool HasHintPrefix(string prefix, string attempted, out string value)
+    // finds out if a property is a primary key property.
+    protected virtual bool IsPrimaryKey(EntityProperty property)
     {
-        value = attempted;
-        if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(attempted))
-            return false;
-        
-        if (attempted.Length > prefix.Length && 
-            attempted.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-        {
-            value = attempted.Substring(prefix.Length);
-            return true;
-        }
-        return false;
+        int pos;
+        return !string.IsNullOrWhiteSpace(property.PrimaryKey)
+            && Int32.TryParse(property.PrimaryKey, out pos)
+            && pos > 0;
     }
 
-    // removes hint prefix
+	// finds out if a property is TimeSpan.
+	protected virtual bool IsTimeSpan(EntityProperty property)
+	{
+		return property.DataType == DataType.TimeSpan;
+	}
+
+    // removes hint prefix from "$(" to ")"
     protected virtual string RemoveHintPrefix(string attempted)
     {
         if (string.IsNullOrWhiteSpace(attempted))
-            return attempted ?? string.Empty;
+            return attempted ?? "";
         
         if (attempted.StartsWith("$("))
         {
@@ -208,47 +231,27 @@
         return value.Replace(Environment.NewLine, " ");
     }
 
-    // converts a property name to an argument name
-    protected virtual string ToArgument(string propertyName)
+    // returns an indentation string
+    protected virtual string Tabs(int tabs, int tablength = 4)
     {
-        if (!string.IsNullOrWhiteSpace(propertyName))
-        {
-            if (propertyName.Length == 1)
-            {
-                return propertyName.ToLowerInvariant();
-            }
-            else
-            {
-                return string.Concat(propertyName.Substring(0, 1).ToLowerInvariant(),
-                                     propertyName.Substring(1));
-            }
-        }
-        return propertyName ?? string.Empty;
+        return new string(' ', tabs * tablength);
     }
 
-    // converts a table name to camelcase
-    protected virtual string ToCamelCaseName(string name)
+    // converts a property name to an argument name
+    protected virtual string ToArgumentName(string propertyName)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            return string.Empty;
+        if (string.IsNullOrWhiteSpace(propertyName))
+            return "";
 
-        string[] parser = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-        return string.Join(string.Empty, parser.Select(x => 
+        if (propertyName.Length == 1)
         {
-            if (x.Length == 0)
-            {
-                return string.Empty;
-            }
-            else if (x.Length == 1)
-            {
-                return x.ToUpperInvariant();
-            }
-            else
-            {
-                return string.Concat(x.Substring(0, 1).ToUpperInvariant(),
-                                     x.Substring(1).ToLowerInvariant());
-            }
-        }));
+            return propertyName.ToLowerInvariant();
+        }
+        else
+        {
+            return string.Concat(propertyName.Substring(0, 1).ToLowerInvariant(),
+                                 propertyName.Substring(1));
+        }
     }
 
     // converts a DataType into a C# type
@@ -260,7 +263,7 @@
     // converts a DataType into a C# type
     protected virtual string ToCSharpType(DataType dataType, bool mandatory)
     {
-        string suffix = mandatory ? string.Empty : "?";
+        string suffix = mandatory ? "" : "?";
         switch (dataType)
         {
         case DataType.BigInt:     return "long" + suffix;
@@ -274,7 +277,7 @@
         case DataType.DateTime:   return "DateTime" + suffix;
         case DataType.Decimal:    return "decimal" + suffix;
         case DataType.Float:      return "double" + suffix;
-        case DataType.Guid:       return "Guid";
+        case DataType.Guid:       return "Guid" + suffix;
         case DataType.Integer:    return "int" + suffix;
         case DataType.SmallInt:   return "short" + suffix;
 		case DataType.TimeSpan:   return "TimeSpan" + suffix;
@@ -288,19 +291,43 @@
     // converts a property name to an field name.
     protected virtual string ToFieldName(string propertyName)
     {
-        if (!string.IsNullOrWhiteSpace(propertyName))
-        {            
-            if (propertyName.Length == 1)
+        if (string.IsNullOrWhiteSpace(propertyName))
+            return "";
+                    
+        if (propertyName.Length == 1)
+        {
+            return string.Concat("_", propertyName.ToLowerInvariant());
+        }
+        else
+        {
+            return string.Concat("_", propertyName.Substring(0, 1).ToLowerInvariant(),
+                                      propertyName.Substring(1));
+        }
+    }
+
+    // converts TENANT_ID into TenantId
+    protected virtual string ToPascalCaseName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return "";
+
+        string[] parser = name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+        return string.Join("", parser.Select(x => 
+        {
+            if (x.Length == 0)
             {
-                return string.Concat("_", propertyName.ToLowerInvariant());
+                return "";
+            }
+            else if (x.Length == 1)
+            {
+                return x.ToUpperInvariant();
             }
             else
             {
-                return string.Concat("_", propertyName.Substring(0, 1).ToLowerInvariant(),
-                                          propertyName.Substring(1));
+                return string.Concat(x.Substring(0, 1).ToUpperInvariant(),
+                                     x.Substring(1).ToLowerInvariant());
             }
-        }
-        return propertyName ?? string.Empty;
+        }));
     }
 
     // converts the relation operator into a text representing the a RelationalOperator enum.
@@ -310,72 +337,53 @@
         {
         case RelationOperator.And:  return "RelationalOperator.And";
         case RelationOperator.Or:   return "RelationalOperator.Or";
-
         default:
-            return string.Empty;
+            return "";
         }
     }
 
     // writes a remarks documentation
 	protected virtual void WriteRemarks(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-        {
-			return;
-		}
-
         ClearIndent();
-        PushIndent(new string(' ', indent * 4));
+        PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <remarks>");
 		foreach (var l in text.SplitNewLine()) 
-		{
 			WriteLine("/// " + l);
-		}
 		WriteLine("/// </remarks>");
-
-        ClearIndent();
 	} 
 
     // writes a returns documentation
 	protected virtual void WriteReturns(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-        {
-			return;
-		}
-
         ClearIndent();
-        PushIndent(new string(' ', indent * 4));
+        PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <returns>");
 		foreach (var l in text.SplitNewLine()) 
-		{
 			WriteLine("/// " + l);
-		}
 		WriteLine("/// </returns>");
-
-        ClearIndent();
 	} 
 
     // writes a summary documentation
 	protected virtual void WriteSummary(int indent, string text)
 	{
-		if (string.IsNullOrWhiteSpace(text)) 
-        {
-			return;
-		}
-
         ClearIndent();
-        PushIndent(new string(' ', indent * 4));
+        PushIndent(Tabs(indent));
+
+		if (string.IsNullOrWhiteSpace(text)) 
+			return;
 
         WriteLine("/// <summary>");
 		foreach (var l in text.SplitNewLine()) 
-		{
 			WriteLine("/// " + l);
-		}
 		WriteLine("/// </summary>");
-
-        ClearIndent();
 	}    
 #>
