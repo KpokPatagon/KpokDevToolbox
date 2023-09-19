@@ -34,9 +34,9 @@
     var modelLabelsType = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsType", "");
     var modelLabelsNamespace = GetExtPropValue(Source.ExtendedProperties, "ModelLabelsNamespace", "");
 
-    WriteLine("using Inetdev.Data;");
-    if (!string.IsNullOrWhiteSpace(Source.DataServices)) {
-        WriteLine("using Inetdev.Data.DependencyInjection;");
+    WriteLine("using KpokPatagon.Data;");
+    if (!string.IsNullOrWhiteSpace(Source.DataService)) {
+        WriteLine("using KpokPatagon.Data.DependencyInjection;");
     }
     WriteLine("using System;");
     WriteLine("using System.Linq;");
@@ -65,8 +65,8 @@
     WriteSummary(1, summary);
     WriteRemarks(1, Source.Remarks);
 
-    if (!string.IsNullOrWhiteSpace(Source.DataServices)) {
-        WriteLine("[DataServiceType(typeof(" + Source.DataServices + "))]");
+    if (!string.IsNullOrWhiteSpace(Source.DataService)) {
+        WriteLine("[DataServiceType(typeof(" + Source.DataService + "))]");
     }
 
     Write(BuildModifier(Source.Access) + " partial class " + className + " : DataModel");

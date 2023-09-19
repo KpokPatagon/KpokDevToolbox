@@ -33,9 +33,9 @@
 
     className = RemoveHintPrefix(Source.Name ?? "");
 
-    WriteLine("using Inetdev.Data;");
-    WriteLine("using Inetdev.Data.Query;");
-    WriteLine("using Inetdev.DependencyInjection;");
+    WriteLine("using KpokPatagon.Data;");
+    WriteLine("using KpokPatagon.Data.Query;");
+    WriteLine("using KpokPatagon.DependencyInjection;");
     WriteLine("using System;");
     WriteLine("using System.Linq;");
     WriteLine("using System.Threading.Tasks;");
