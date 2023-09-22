@@ -1,0 +1,363 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>DataService - Kpok Dev Toolbox</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="mb-4 navbar navbar-expand-lg navbar-dark bg-secondary">
+        <div class="navbar navbar-light bg-secondary">
+            <a class="navbar-brand" href="#">Kpok Dev Toolbox</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="https://kpokpatagon.github.io/KpokDevToolbox">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="../../index.html">Index</a></li>
+                <li class="nav-item"><a class="nav-link" href="../../kpokentitytool-64bits/toc.html">Table of Contents</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-9">
+<h1>DataService</h1>
+<p class="lead">Models a data service class.</p>
+<dl class="row mt-4">
+<dt class="text-truncate col-3">Namespace:</dt><dd class="col-9">KpokEntityTool.Models</dd>
+<dt class="text-truncate col-3">Type:</dt><dd class="col-9">Class</dd>
+</dl>
+<dl class="row mt-4">
+    <dt class="text-truncate col-3">Public:</dt><dd class="col-9">Yes</dd>
+    <dt class="text-truncate col-3">Protected:</dt><dd class="col-9">No</dd>
+    <dt class="text-truncate col-3">Sealed:</dt><dd class="col-9">No</dd>
+    <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
+<dt class="text-truncate col-sm-3">Inherits from:</dt>
+<dd class="col-sm-9">System.Object</dd>
+<dt class="text-truncate col-sm-3">Implements:</dt>
+<dd class="col-sm-9">System.IEquatable{KpokEntityTool.Models.DataService}, System.ComponentModel.INotifyPropertyChanged, KpokEntityTool.Models.IDesignerModel</dd>
+</dl>
+<h2 id="constructors" class="mt-5">Constructors</h2>
+<div id="" class="mb-5">
+    <h3 class="lead text-info">DataService</h3>
+    <p>Default constructor</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> DataService()</code></dd>
+</dl>
+</div>
+<h2 id="events" class="mt-5">Events</h2>
+<table class="table">
+<thead>
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Summary</th>
+    <tr>
+</thead>
+<tbody>
+<tr>
+    <td><span class="text-info" title="System.ComponentModel.PropertyChangedEventHandler">PropertyChangedEventHandler</span></td>
+    <td><strong>PropertyChanged</strong></td>
+    <td>Notify that a property was changed.</td>
+</tr>
+</tbody></table>
+<h2 id="properties" class="mt-5">Properties</h2>
+<div id="P:KpokEntityTool.Models.DataService.Access" class="mb-5">
+    <h3 class="lead text-info">Access</h3>
+    <p>Access modifier for this type.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-accessmodifier.html">AccessModifier</a> Access { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Alias" class="mb-5">
+    <h3 class="lead text-info">Alias</h3>
+    <p>Alias for sentence building.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Alias { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.CommandBuilder" class="mb-5">
+    <h3 class="lead text-info">CommandBuilder</h3>
+    <p>The name of the IDbCmdBuilder for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> CommandBuilder { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.DataModelAuditor" class="mb-5">
+    <h3 class="lead text-info">DataModelAuditor</h3>
+    <p>The name of the IDataModelAuditor for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataModelAuditor { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.DataModelCommandBuilder" class="mb-5">
+    <h3 class="lead text-info">DataModelCommandBuilder</h3>
+    <p>The name of the IDataModelCmdBuilder for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataModelCommandBuilder { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.DesignerTemplate" class="mb-5">
+    <h3 class="lead text-info">DesignerTemplate</h3>
+    <p>A full path for the template used to generate designer code.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DesignerTemplate { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.ExtendedProperties" class="mb-5">
+    <h3 class="lead text-info">ExtendedProperties</h3>
+    <p>A collection of arbitrary name/value properties.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-extendedpropertycollection.html">ExtendedPropertyCollection</a> ExtendedProperties { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Fields" class="mb-5">
+    <h3 class="lead text-info">Fields</h3>
+    <p>A collection of fields.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-fieldcollection.html">FieldCollection</a> Fields { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Filters" class="mb-5">
+    <h3 class="lead text-info">Filters</h3>
+    <p>A collection of filters.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-filtercollection.html">FilterCollection</a> Filters { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Identity" class="mb-5">
+    <h3 class="lead text-info">Identity</h3>
+    <p>The name of the IIdentity service for identity generation.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Identity { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Name" class="mb-5">
+    <h3 class="lead text-info">Name</h3>
+    <p>Name of the entity (class name).</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Name { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Namespace" class="mb-5">
+    <h3 class="lead text-info">Namespace</h3>
+    <p>Namespace where the entity lives.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Namespace { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Numerator" class="mb-5">
+    <h3 class="lead text-info">Numerator</h3>
+    <p>The name of the INumerator for generation of numerator values.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Numerator { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Release" class="mb-5">
+    <h3 class="lead text-info">Release</h3>
+    <p>Data service release number.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Release { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Remarks" class="mb-5">
+    <h3 class="lead text-info">Remarks</h3>
+    <p>Remarks text.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Remarks { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Schema" class="mb-5">
+    <h3 class="lead text-info">Schema</h3>
+    <p>Schema.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Schema { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.SequenceName" class="mb-5">
+    <h3 class="lead text-info">SequenceName</h3>
+    <p>Name of the sequence.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> SequenceName { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.SkipExtensionTemplateGeneration" class="mb-5">
+    <h3 class="lead text-info">SkipExtensionTemplateGeneration</h3>
+    <p><strong class="text-info">true</strong> if extension internal template generation mist be skipped, otherwise <strong class="text-info">false</strong>.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> SkipExtensionTemplateGeneration { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Summary" class="mb-5">
+    <h3 class="lead text-info">Summary</h3>
+    <p>Summary text or documentation.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Summary { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Table" class="mb-5">
+    <h3 class="lead text-info">Table</h3>
+    <p>Table name.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Table { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Templates" class="mb-5">
+    <h3 class="lead text-info">Templates</h3>
+    <p>A collection <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-template.html">Template</a>s to transform this model.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-templatecollection.html">TemplateCollection</a> Templates { get; set; }</code></dd>
+</dl>
+</div>
+<div id="P:KpokEntityTool.Models.DataService.Validator" class="mb-5">
+    <h3 class="lead text-info">Validator</h3>
+    <p>The name of the IDataModelValidator for this service.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Validator { get; set; }</code></dd>
+</dl>
+</div>
+<h2 id="methods" class="mt-5">Methods</h2>
+<div id="M:KpokEntityTool.Models.DataService.Equals(KpokEntityTool.Models.DataService)" class="mb-5">
+    <h3 class="lead text-info">Equals</h3>
+    <p>Checkes whether <strong class="text-info">other</strong> is equal to this object.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(other)</code></dd>
+</dl>
+<h6 class="mt-1">Returns</h6>
+<p><strong class="text-info">true</strong> if the objects are equal.</p>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>other</td>
+        <td><strong>DataService</strong></td>
+        <td>Object to compare.</td>
+    </tr>
+</tbody></table>
+</div>
+<div id="M:KpokEntityTool.Models.DataService.Equals(System.Object)" class="mb-5">
+    <h3 class="lead text-info">Equals</h3>
+    <p>Checkes whether <strong class="text-info">obj</strong> is equal to this object.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(obj)</code></dd>
+</dl>
+<h6 class="mt-1">Returns</h6>
+<p><strong class="text-info">true</strong> if the objects are equal.</p>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>obj</td>
+        <td><span class="text-info" title="System.Object">Object</span></td>
+        <td>Object to compare.</td>
+    </tr>
+</tbody></table>
+</div>
+<div id="M:KpokEntityTool.Models.DataService.GetHashCode" class="mb-5">
+    <h3 class="lead text-info">GetHashCode</h3>
+    <p>Not required, implemented to avoid warnings.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> GetHashCode()</code></dd>
+</dl>
+</div>
+<div id="M:KpokEntityTool.Models.DataService.ToString" class="mb-5">
+    <h3 class="lead text-info">ToString</h3>
+    <p>Returns a textual representation of the <b>DataService</b>.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ToString()</code></dd>
+</dl>
+</div>
+            </div>
+            <div class="col-3 d-none d-lg-block">
+<p><strong>In this document</strong></p>
+<ul class="list-unstyled">
+<li><a href="#constructors">Constructors</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#properties">Properties</a></li>
+<li>
+    <ul style="font-size:0.8em;">
+        <li><a href="#P:KpokEntityTool.Models.DataService.Access">Access</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Alias">Alias</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.CommandBuilder">CommandBuilder</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.DataModelAuditor">DataModelAuditor</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.DataModelCommandBuilder">DataModelCommandBuilder</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.DesignerTemplate">DesignerTemplate</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.ExtendedProperties">ExtendedProperties</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Fields">Fields</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Filters">Filters</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Identity">Identity</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Name">Name</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Namespace">Namespace</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Numerator">Numerator</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Release">Release</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Remarks">Remarks</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Schema">Schema</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.SequenceName">SequenceName</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.SkipExtensionTemplateGeneration">SkipExtensionTemplateGeneration</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Summary">Summary</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Table">Table</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Templates">Templates</a></li>
+        <li><a href="#P:KpokEntityTool.Models.DataService.Validator">Validator</a></li>
+    </ul>
+</li>
+<li><a href="#methods">Methods</a></li>
+<li>
+    <ul style="font-size:0.8em;">
+        <li><a href="#M:KpokEntityTool.Models.DataService.Equals(KpokEntityTool.Models.DataService)">Equals</a></li>
+        <li><a href="#M:KpokEntityTool.Models.DataService.Equals(System.Object)">Equals</a></li>
+        <li><a href="#M:KpokEntityTool.Models.DataService.GetHashCode">GetHashCode</a></li>
+        <li><a href="#M:KpokEntityTool.Models.DataService.ToString">ToString</a></li>
+    </ul>
+</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

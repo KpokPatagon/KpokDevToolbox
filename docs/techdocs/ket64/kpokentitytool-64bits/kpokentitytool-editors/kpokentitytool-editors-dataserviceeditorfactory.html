@@ -1,0 +1,232 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>DataServiceEditorFactory - Kpok Dev Toolbox</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="mb-4 navbar navbar-expand-lg navbar-dark bg-secondary">
+        <div class="navbar navbar-light bg-secondary">
+            <a class="navbar-brand" href="#">Kpok Dev Toolbox</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="https://kpokpatagon.github.io/KpokDevToolbox">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="../../index.html">Index</a></li>
+                <li class="nav-item"><a class="nav-link" href="../../kpokentitytool-64bits/toc.html">Table of Contents</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-9">
+<h1>DataServiceEditorFactory</h1>
+<p class="lead">The data services editor factory.</p>
+<dl class="row mt-4">
+<dt class="text-truncate col-3">Namespace:</dt><dd class="col-9">KpokEntityTool.Editors</dd>
+<dt class="text-truncate col-3">Type:</dt><dd class="col-9">Class</dd>
+</dl>
+<dl class="row mt-4">
+    <dt class="text-truncate col-3">Public:</dt><dd class="col-9">Yes</dd>
+    <dt class="text-truncate col-3">Protected:</dt><dd class="col-9">No</dd>
+    <dt class="text-truncate col-3">Sealed:</dt><dd class="col-9">Yes</dd>
+    <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
+<dt class="text-truncate col-sm-3">Inherits from:</dt>
+<dd class="col-sm-9">System.Object</dd>
+<dt class="text-truncate col-sm-3">Implements:</dt>
+<dd class="col-sm-9">Microsoft.VisualStudio.Shell.Interop.IVsEditorFactory, System.IDisposable</dd>
+</dl>
+<h2 id="constructors" class="mt-5">Constructors</h2>
+<div id="" class="mb-5">
+    <h3 class="lead text-info">DataServiceEditorFactory</h3>
+    <p>Default constructor</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> DataServiceEditorFactory()</code></dd>
+</dl>
+</div>
+<h2 id="methods" class="mt-5">Methods</h2>
+<div id="M:KpokEntityTool.Editors.DataServiceEditorFactory.Close" class="mb-5">
+    <h3 class="lead text-info">Close</h3>
+    <p>Close.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> Close()</code></dd>
+</dl>
+</div>
+<div id="M:KpokEntityTool.Editors.DataServiceEditorFactory.CreateEditorInstance(System.UInt32,System.String,System.String,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,System.IntPtr,System.IntPtr@,System.IntPtr@,System.String@,System.Guid@,System.Int32@)" class="mb-5">
+    <h3 class="lead text-info">CreateEditorInstance</h3>
+    <p>Used by the editor factory to create an editor instance. The environment first determines the 
+            editor factory with the highest priority for opening the file and then calls 
+            IVsEditorFactory.CreateEditorInstance. If the environment is unable to instantiate the document data 
+            in that editor, it will find the editor with the next highest priority and attempt to so that same 
+            thing. 
+            NOTE: The priority of our editor is 32 as mentioned in the attributes on the package class.
+            
+            Since our editor supports opening only a single view for an instance of the document data, if we 
+            are requested to open document data that is already instantiated in another editor, or even our 
+            editor, we return a value VS_E_INCOMPATIBLEDOCDATA.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> CreateEditorInstance(grfCreateDoc, pszMkDocument, pszPhysicalView, pvHier, itemid, punkDocDataExisting, ppunkDocView, ppunkDocData, pbstrEditorCaption, pguidCmdUI, pgrfCDW)</code></dd>
+</dl>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>grfCreateDoc</td>
+        <td><span class="text-info" title="System.UInt32">UInt32</span></td>
+        <td>Flags determining when to create the editor. Only open and silent flags 
+            are valid</td>
+    </tr>
+    <tr>
+        <td>pszMkDocument</td>
+        <td><span class="text-info" title="System.String">String</span></td>
+        <td>path to the file to be opened</td>
+    </tr>
+    <tr>
+        <td>pszPhysicalView</td>
+        <td><span class="text-info" title="System.String">String</span></td>
+        <td>name of the physical view</td>
+    </tr>
+    <tr>
+        <td>pvHier</td>
+        <td><span class="text-info" title="Microsoft.VisualStudio.Shell.Interop.IVsHierarchy">IVsHierarchy</span></td>
+        <td>pointer to the IVsHierarchy interface</td>
+    </tr>
+    <tr>
+        <td>itemid</td>
+        <td><span class="text-info" title="System.UInt32">UInt32</span></td>
+        <td>Item identifier of this editor instance</td>
+    </tr>
+    <tr>
+        <td>punkDocDataExisting</td>
+        <td><span class="text-info" title="System.IntPtr">IntPtr</span></td>
+        <td>This parameter is used to determine if a document buffer 
+            (DocData object) has already been created</td>
+    </tr>
+    <tr>
+        <td>ppunkDocView</td>
+        <td><span class="text-info" title="System.IntPtr@">IntPtr@</span></td>
+        <td>Pointer to the IUnknown interface for the DocView object</td>
+    </tr>
+    <tr>
+        <td>ppunkDocData</td>
+        <td><span class="text-info" title="System.IntPtr@">IntPtr@</span></td>
+        <td>Pointer to the IUnknown interface for the DocData object</td>
+    </tr>
+    <tr>
+        <td>pbstrEditorCaption</td>
+        <td><span class="text-info" title="System.String@">String@</span></td>
+        <td>Caption mentioned by the editor for the doc window</td>
+    </tr>
+    <tr>
+        <td>pguidCmdUI</td>
+        <td><span class="text-info" title="System.Guid@">Guid@</span></td>
+        <td>The Command UI Guid. Any UI element that is visible in the editor has 
+            to use this GUID. This is specified in the .vsct file</td>
+    </tr>
+    <tr>
+        <td>pgrfCDW</td>
+        <td><span class="text-info" title="System.Int32@">Int32@</span></td>
+        <td>Flags for CreateDocumentWindow</td>
+    </tr>
+</tbody></table>
+</div>
+<div id="M:KpokEntityTool.Editors.DataServiceEditorFactory.Dispose" class="mb-5">
+    <h3 class="lead text-info">Dispose</h3>
+    <p>Since we create a ServiceProvider which implements IDisposable we
+            also need to implement IDisposable to make sure that the ServiceProvider's
+            Dispose method gets called.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> Dispose()</code></dd>
+</dl>
+</div>
+<div id="M:KpokEntityTool.Editors.DataServiceEditorFactory.MapLogicalView(System.Guid@,System.String@)" class="mb-5">
+    <h3 class="lead text-info">MapLogicalView</h3>
+    <p>Maps the logical views for the editor.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> MapLogicalView(rguidLogicalView, pbstrPhysicalView)</code></dd>
+</dl>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>rguidLogicalView</td>
+        <td><span class="text-info" title="System.Guid@">Guid@</span></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>pbstrPhysicalView</td>
+        <td><span class="text-info" title="System.String@">String@</span></td>
+        <td></td>
+    </tr>
+</tbody></table>
+</div>
+<div id="M:KpokEntityTool.Editors.DataServiceEditorFactory.SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)" class="mb-5">
+    <h3 class="lead text-info">SetSite</h3>
+    <p>Used for initialization of the editor in the environment.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> SetSite(psp)</code></dd>
+</dl>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>psp</td>
+        <td><span class="text-info" title="Microsoft.VisualStudio.OLE.Interop.IServiceProvider">IServiceProvider</span></td>
+        <td>Pointer to the service provider. Can be used to obtain instances of other interfaces.</td>
+    </tr>
+</tbody></table>
+</div>
+            </div>
+            <div class="col-3 d-none d-lg-block">
+<p><strong>In this document</strong></p>
+<ul class="list-unstyled">
+<li><a href="#constructors">Constructors</a></li>
+<li><a href="#methods">Methods</a></li>
+<li>
+    <ul style="font-size:0.8em;">
+        <li><a href="#M:KpokEntityTool.Editors.DataServiceEditorFactory.Close">Close</a></li>
+        <li><a href="#M:KpokEntityTool.Editors.DataServiceEditorFactory.CreateEditorInstance(System.UInt32,System.String,System.String,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,System.IntPtr,System.IntPtr@,System.IntPtr@,System.String@,System.Guid@,System.Int32@)">CreateEditorInstance</a></li>
+        <li><a href="#M:KpokEntityTool.Editors.DataServiceEditorFactory.Dispose">Dispose</a></li>
+        <li><a href="#M:KpokEntityTool.Editors.DataServiceEditorFactory.MapLogicalView(System.Guid@,System.String@)">MapLogicalView</a></li>
+        <li><a href="#M:KpokEntityTool.Editors.DataServiceEditorFactory.SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">SetSite</a></li>
+    </ul>
+</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
