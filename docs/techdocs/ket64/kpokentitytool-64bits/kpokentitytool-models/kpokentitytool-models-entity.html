@@ -36,20 +36,9 @@
     <dt class="text-truncate col-3">Protected:</dt><dd class="col-9">No</dd>
     <dt class="text-truncate col-3">Sealed:</dt><dd class="col-9">No</dd>
     <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
-<dt class="text-truncate col-sm-3">Inherits from:</dt>
-<dd class="col-sm-9">System.Object</dd>
 <dt class="text-truncate col-sm-3">Implements:</dt>
-<dd class="col-sm-9">System.IEquatable{KpokEntityTool.Models.Entity}, System.ComponentModel.INotifyPropertyChanged, KpokEntityTool.Models.IDesignerModel</dd>
+<dd class="col-sm-9">System.IEquatable, System.ComponentModel.INotifyPropertyChanged, KpokEntityTool.Models.IDesignerModel</dd>
 </dl>
-<h2 id="constructors" class="mt-5">Constructors</h2>
-<div id="" class="mb-5">
-    <h3 class="lead text-info">Entity</h3>
-    <p>Default constructor</p>
-<dl class="row">
-    <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> Entity()</code></dd>
-</dl>
-</div>
 <h2 id="events" class="mt-5">Events</h2>
 <table class="table">
 <thead>
@@ -72,7 +61,7 @@
     <p>Access modifier for this type.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-accessmodifier.html">AccessModifier</a> Access { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="AccessModifier">AccessModifier</span> Access { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Caption" class="mb-5">
@@ -80,7 +69,7 @@
     <p>Caption of the entity.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Caption { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Caption { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.DataService" class="mb-5">
@@ -88,7 +77,7 @@
     <p>Data service type name.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DataService { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> DataService { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.DesignerTemplate" class="mb-5">
@@ -96,7 +85,7 @@
     <p>A full path for the template used to generate designer code.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> DesignerTemplate { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> DesignerTemplate { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.EnforceModelValidation" class="mb-5">
@@ -104,7 +93,7 @@
     <p>Whether the validation must be enforce.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> EnforceModelValidation { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> EnforceModelValidation { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.ExtendedProperties" class="mb-5">
@@ -112,7 +101,7 @@
     <p>A collection arbitrary name/value properties.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-extendedpropertycollection.html">ExtendedPropertyCollection</a> ExtendedProperties { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="ExtendedPropertyCollection">ExtendedPropertyCollection</span> ExtendedProperties { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Name" class="mb-5">
@@ -120,7 +109,7 @@
     <p>Name of the entity (class name).</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Name { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Name { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Namespace" class="mb-5">
@@ -128,7 +117,7 @@
     <p>Namespace where the entity lives.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Namespace { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Namespace { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.NavigationalProperties" class="mb-5">
@@ -136,7 +125,7 @@
     <p>A collection of navigational properties.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-navigationalpropertycollection.html">NavigationalPropertyCollection</a> NavigationalProperties { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="NavigationalPropertyCollection">NavigationalPropertyCollection</span> NavigationalProperties { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Properties" class="mb-5">
@@ -144,7 +133,7 @@
     <p>A collection of the entity data properties.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-entitypropertycollection.html">EntityPropertyCollection</a> Properties { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="EntityPropertyCollection">EntityPropertyCollection</span> Properties { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Release" class="mb-5">
@@ -152,7 +141,7 @@
     <p>Entity release number.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Release { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Release { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Remarks" class="mb-5">
@@ -160,7 +149,7 @@
     <p>Remarks text.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Remarks { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Remarks { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.ResourceFileName" class="mb-5">
@@ -168,7 +157,7 @@
     <p>A full path for the resource file (*.resx) for the neutral culture labels.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ResourceFileName { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> ResourceFileName { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.SkipExtensionTemplateGeneration" class="mb-5">
@@ -176,7 +165,7 @@
     <p><strong class="text-info">true</strong> if extension internal template generation mist be skipped, otherwise <strong class="text-info">false</strong>.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> SkipExtensionTemplateGeneration { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> SkipExtensionTemplateGeneration { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Summary" class="mb-5">
@@ -184,7 +173,7 @@
     <p>Summary text or documentation.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Summary { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Summary { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.Entity.Templates" class="mb-5">
@@ -192,7 +181,7 @@
     <p>A collection <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-template.html">Template</a>s to transform this model.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-templatecollection.html">TemplateCollection</a> Templates { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="TemplateCollection">TemplateCollection</span> Templates { get; set; }</code></dd>
 </dl>
 </div>
 <h2 id="methods" class="mt-5">Methods</h2>
@@ -201,7 +190,7 @@
     <p>Checks whether <strong class="text-info">other</strong> is equal to this object.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(other)</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> Equals(other)</code></dd>
 </dl>
 <h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equal.</p>
@@ -217,7 +206,7 @@
 <tbody>
     <tr>
         <td>other</td>
-        <td><strong>Entity</strong></td>
+        <td><span class="text-info" title="Entity">Entity</span></td>
         <td>Object to compare.</td>
     </tr>
 </tbody></table>
@@ -227,7 +216,7 @@
     <p>Checks whether <strong class="text-info">obj</strong> is equal to this instance.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(obj)</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> Equals(obj)</code></dd>
 </dl>
 <h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equal.</p>
@@ -243,7 +232,7 @@
 <tbody>
     <tr>
         <td>obj</td>
-        <td><span class="text-info" title="System.Object">Object</span></td>
+        <td><span class="text-info" title="Object">Object</span></td>
         <td>Object to compare.</td>
     </tr>
 </tbody></table>
@@ -253,7 +242,7 @@
     <p>Implemented for avoiding warnings.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> GetHashCode()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Int32">Int32</span> GetHashCode()</code></dd>
 </dl>
 </div>
 <div id="M:KpokEntityTool.Models.Entity.ToString" class="mb-5">
@@ -261,14 +250,13 @@
     <p>Return a text representation of the <b>Entity</b>.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ToString()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> ToString()</code></dd>
 </dl>
 </div>
             </div>
             <div class="col-3 d-none d-lg-block">
 <p><strong>In this document</strong></p>
 <ul class="list-unstyled">
-<li><a href="#constructors">Constructors</a></li>
 <li><a href="#events">Events</a></li>
 <li><a href="#properties">Properties</a></li>
 <li>

@@ -39,22 +39,13 @@
 <dt class="text-truncate col-sm-3">Inherits from:</dt>
 <dd class="col-sm-9">Community.VisualStudio.Toolkit.ToolkitPackage</dd>
 </dl>
-<h2 id="constructors" class="mt-5">Constructors</h2>
-<div id="" class="mb-5">
-    <h3 class="lead text-info">KpokEntityToolPackage</h3>
-    <p>Default constructor</p>
-<dl class="row">
-    <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> KpokEntityToolPackage()</code></dd>
-</dl>
-</div>
 <h2 id="methods" class="mt-5">Methods</h2>
 <div id="M:KpokEntityTool.KpokEntityToolPackage.GetOutputWindowPaneAsync" class="mb-5">
     <h3 class="lead text-info">GetOutputWindowPaneAsync</h3>
     <p>Gets an output window pane for this extension.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Threading.Tasks.Task{Community.VisualStudio.Toolkit.OutputWindowPane}">Task&lt;OutputWindowPane&gt;</span> GetOutputWindowPaneAsync()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Task">Task</span> GetOutputWindowPaneAsync()</code></dd>
 </dl>
 <h6 class="mt-1">Returns</h6>
 <p>An output window pane.</p>
@@ -66,7 +57,7 @@
             rely on services provided by VisualStudio.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>protected <span class="text-info" title="System.Threading.Tasks.Task">Task</span> InitializeAsync(cancellationToken, progress)</code></dd>
+    <dd class="col-10"><code>protected <span class="text-info" title="Task">Task</span> InitializeAsync(cancellationToken, progress)</code></dd>
 </dl>
 <h6 class="mt-1">Parameters</h6>
 <table class="table table-sm table-bordered">
@@ -80,12 +71,12 @@
 <tbody>
     <tr>
         <td>cancellationToken</td>
-        <td><span class="text-info" title="System.Threading.CancellationToken">CancellationToken</span></td>
+        <td><span class="text-info" title="CancellationToken">CancellationToken</span></td>
         <td></td>
     </tr>
     <tr>
         <td>progress</td>
-        <td><span class="text-info" title="System.IProgress{Microsoft.VisualStudio.Shell.ServiceProgressData}">IProgress&lt;ServiceProgressData&gt;</span></td>
+        <td><span class="text-info" title="IProgress&lt;ServiceProgressData&gt;">IProgress&lt;ServiceProgressData&gt;</span></td>
         <td></td>
     </tr>
 </tbody></table>
@@ -94,7 +85,6 @@
             <div class="col-3 d-none d-lg-block">
 <p><strong>In this document</strong></p>
 <ul class="list-unstyled">
-<li><a href="#constructors">Constructors</a></li>
 <li><a href="#methods">Methods</a></li>
 <li>
     <ul style="font-size:0.8em;">

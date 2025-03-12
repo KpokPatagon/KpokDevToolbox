@@ -36,10 +36,8 @@
     <dt class="text-truncate col-3">Protected:</dt><dd class="col-9">No</dd>
     <dt class="text-truncate col-3">Sealed:</dt><dd class="col-9">No</dd>
     <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
-<dt class="text-truncate col-sm-3">Inherits from:</dt>
-<dd class="col-sm-9">System.Object</dd>
 <dt class="text-truncate col-sm-3">Implements:</dt>
-<dd class="col-sm-9">System.IEquatable{KpokEntityTool.Models.ForeignKey}, System.ComponentModel.INotifyPropertyChanged</dd>
+<dd class="col-sm-9">System.IEquatable, System.ComponentModel.INotifyPropertyChanged</dd>
 </dl>
 <h2 id="constructors" class="mt-5">Constructors</h2>
 <div id="M:KpokEntityTool.Models.ForeignKey.#ctor" class="mb-5">
@@ -47,7 +45,7 @@
     <p>Default constructor</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Void">Void</span> ForeignKey()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Void">Void</span> ForeignKey()</code></dd>
 </dl>
 </div>
 <h2 id="events" class="mt-5">Events</h2>
@@ -72,7 +70,7 @@
     <p>Columns of the foreign key.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-foreignkeycolumncollection.html">ForeignKeyColumnCollection</a> Columns { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="ForeignKeyColumnCollection">ForeignKeyColumnCollection</span> Columns { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.Description" class="mb-5">
@@ -80,7 +78,7 @@
     <p>Foreign key description.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Description { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Description { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.Name" class="mb-5">
@@ -88,7 +86,7 @@
     <p>Foreign key name.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> Name { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> Name { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.OnDelete" class="mb-5">
@@ -96,7 +94,7 @@
     <p>Referencial action to execute on delete.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-referentialaction.html">ReferentialAction</a> OnDelete { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="ReferentialAction">ReferentialAction</span> OnDelete { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.OnUpdate" class="mb-5">
@@ -104,7 +102,7 @@
     <p>Referential action to execute en update.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <a href="../../kpokentitytool-64bits/kpokentitytool-models/kpokentitytool-models-referentialaction.html">ReferentialAction</a> OnUpdate { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="ReferentialAction">ReferentialAction</span> OnUpdate { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.ReferencedTableName" class="mb-5">
@@ -112,7 +110,7 @@
     <p>Name of the referenced table.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ReferencedTableName { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> ReferencedTableName { get; set; }</code></dd>
 </dl>
 </div>
 <div id="P:KpokEntityTool.Models.ForeignKey.ReferencedTableSchema" class="mb-5">
@@ -120,7 +118,7 @@
     <p>Schema of the referenced table.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ReferencedTableSchema { get; set; }</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> ReferencedTableSchema { get; set; }</code></dd>
 </dl>
 </div>
 <h2 id="methods" class="mt-5">Methods</h2>
@@ -129,7 +127,7 @@
     <p>Checks whether <strong class="text-info">other</strong> is equals to this object.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(other)</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> Equals(other)</code></dd>
 </dl>
 <h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equals.</p>
@@ -145,7 +143,7 @@
 <tbody>
     <tr>
         <td>other</td>
-        <td><strong>ForeignKey</strong></td>
+        <td><span class="text-info" title="ForeignKey">ForeignKey</span></td>
         <td>Object to compare.</td>
     </tr>
 </tbody></table>
@@ -155,7 +153,7 @@
     <p>Checks whether <strong class="text-info">obj</strong> is equals to this object.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Boolean">Boolean</span> Equals(obj)</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Boolean">Boolean</span> Equals(obj)</code></dd>
 </dl>
 <h6 class="mt-1">Returns</h6>
 <p><strong class="text-info">true</strong> if the objects are equals.</p>
@@ -171,7 +169,7 @@
 <tbody>
     <tr>
         <td>obj</td>
-        <td><span class="text-info" title="System.Object">Object</span></td>
+        <td><span class="text-info" title="Object">Object</span></td>
         <td>Object to compare.</td>
     </tr>
 </tbody></table>
@@ -181,7 +179,7 @@
     <p>Not required, implemented to avoid warnings.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.Int32">Int32</span> GetHashCode()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="Int32">Int32</span> GetHashCode()</code></dd>
 </dl>
 </div>
 <div id="M:KpokEntityTool.Models.ForeignKey.ToString" class="mb-5">
@@ -189,7 +187,7 @@
     <p>Returns a textual representation of this object.</p>
 <dl class="row">
     <dt class="text-truncate col-2">Signature:</dt>
-    <dd class="col-10"><code>public <span class="text-info" title="System.String">String</span> ToString()</code></dd>
+    <dd class="col-10"><code>public <span class="text-info" title="String">String</span> ToString()</code></dd>
 </dl>
 </div>
             </div>
