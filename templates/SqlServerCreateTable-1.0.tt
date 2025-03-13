@@ -37,7 +37,7 @@
     WriteLine("");
     WriteLine("CREATE TABLE " + tableName);
     WriteLine("(");
-    PushIndent(Tabs(1));
+    PushIndent(T(1));
 
     s = true;
     sep = "  ";
@@ -96,7 +96,7 @@
         Write(index.Type == IndexType.Clustered ? " CLUSTERED" : " NONCLUSTERED");
         WriteLine(" INDEX [" + (index.Name ?? "") + "] ON " + tableName);
         WriteLine("(");
-        PushIndent(Tabs(1));
+        PushIndent(T(1));
 
         s = true;
         sep = "  ";
@@ -133,7 +133,7 @@
     {
         WriteLine("");
         WriteLine("ALTER TABLE " + tableName + " ADD CONSTRAINT [" + (fk.Name ?? "") + "]");
-        PushIndent(Tabs(1));
+        PushIndent(T(1));
 
         sep = "";
         Write("FOREIGN KEY (");
@@ -151,7 +151,7 @@
         }
         WriteLine(")");
 
-        PushIndent(Tabs(1));
+        PushIndent(T(1));
         WriteLine("ON DELETE " + BuildReferentialAction(fk.OnDelete));
         WriteLine("ON UPDATE " + BuildReferentialAction(fk.OnUpdate));
         PopIndent();

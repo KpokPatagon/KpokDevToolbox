@@ -1,6 +1,7 @@
 <#@ assembly name="netstandard.dll" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="KpokEntityTool" #>
 <#@ import namespace="KpokEntityTool.Models" #>
@@ -241,7 +242,7 @@
     }
 
     // returns an indentation string
-    protected virtual string Tabs(int tabs, int tablength = 4)
+    protected virtual string T(int tabs, int tablength = 4)
     {
         return new string(' ', tabs * tablength);
     }
@@ -314,6 +315,24 @@
         }
     }
 
+    // converts a camel case type name into a lower camel case type name.
+    protected virtual string ToLowerCamelCase(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            if (value.Length == 1)
+            {
+                return value.ToLowerInvariant();
+            }
+            else
+            {
+                return string.Concat(value.Substring(0, 1).ToLowerInvariant(),
+                                     value.Substring(1));
+            }
+        }
+        return "";
+    }
+
     // converts TENANT_ID into TenantId
     protected virtual string ToPascalCaseName(string name)
     {
@@ -351,11 +370,92 @@
         }
     }
 
+    // returns the default value for thr DataType
+    protected virtual string ToTypeScriptDefaultValue(DataType dataType)
+    {
+        switch (dataType)
+        {
+        case DataType.BigInt:     return "0";
+        case DataType.Blob:       return "undefined";
+        case DataType.Boolean:    return "false";
+
+        case DataType.Clob:
+        case DataType.NClob:
+            return "''";
+
+        case DataType.DateTime:   return "undefined";
+        case DataType.Decimal:    return "0";
+        case DataType.Float:      return "0";
+        case DataType.Guid:       return "''";
+        case DataType.Integer:    return "0";
+        case DataType.SmallInt:   return "0";
+		case DataType.TimeSpan:   return "undefined";
+        case DataType.TinyInt:    return "0";
+
+        default:
+            return "''";
+        }
+    }
+
+    // converts a camel case type name into a typescript file name without the extension.
+    protected virtual string ToTypeScriptFileName(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            StringBuilder builder = new StringBuilder(value.Length * 2);
+            char[] parser = value.ToCharArray();
+
+            foreach (var c in parser)
+            {
+                if (Char.IsUpper(c))
+                {
+                    if (builder.Length > 0)
+                        builder.Append("-");
+                    builder.Append(c.ToString().ToLowerInvariant());
+                }
+                else
+                {
+                    builder.Append(c);
+                }
+            }
+            return builder.ToString();
+        }
+        return "";
+    }
+
+    // converts a DataType into a TypeScript type
+    protected virtual string ToTypeScriptType(DataType dataType, bool mandatory)
+    {
+        string suffix = mandatory ? "" : " | undefined";
+        switch (dataType)
+        {
+        case DataType.BigInt:     return "number" + suffix;
+        case DataType.Blob:       return "byte[]" + suffix;
+        case DataType.Boolean:    return "boolean" + suffix;
+
+        case DataType.Clob:
+        case DataType.NClob:
+            return "string" + suffix;
+
+        case DataType.DateTime:   return "Date" + suffix;
+        case DataType.Decimal:    return "number" + suffix;
+        case DataType.Float:      return "number" + suffix;
+        case DataType.Guid:       return "string" + suffix;
+        case DataType.Integer:    return "number" + suffix;
+        case DataType.SmallInt:   return "number" + suffix;
+		case DataType.TimeSpan:   return "Date" + suffix;
+        case DataType.TinyInt:    return "number" + suffix;
+
+        default:
+            return "string" + suffix;
+        }
+    }
+
     // writes a remarks documentation
 	protected virtual void WriteRemarks(int indent, string text)
 	{
         ClearIndent();
-        PushIndent(Tabs(indent));
+        PushIndent(T(indent));
 
 		if (string.IsNullOrWhiteSpace(text)) 
 			return;
@@ -370,7 +470,7 @@
 	protected virtual void WriteReturns(int indent, string text)
 	{
         ClearIndent();
-        PushIndent(Tabs(indent));
+        PushIndent(T(indent));
 
 		if (string.IsNullOrWhiteSpace(text)) 
 			return;
@@ -385,7 +485,7 @@
 	protected virtual void WriteSummary(int indent, string text)
 	{
         ClearIndent();
-        PushIndent(Tabs(indent));
+        PushIndent(T(indent));
 
 		if (string.IsNullOrWhiteSpace(text)) 
 			return;

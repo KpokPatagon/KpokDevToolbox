@@ -1,0 +1,4 @@
+[
+    { "Key": "NamespaceSuffix", "Value": ".Dtos" },
+    { "Key": "ClassSuffix", "Value": "Dto" }
+]

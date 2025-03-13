@@ -80,7 +80,7 @@
     WriteLine("{");
 
     ClearIndent();
-    PushIndent(Tabs(2));
+    PushIndent(T(2));
 
     tmp = !string.IsNullOrWhiteSpace(Source.Alias) ? Source.Alias : (Source.Table ?? "");
     WriteLine("private string _alias;");
@@ -126,7 +126,7 @@
     WriteLine("    {");
     WriteLine("        _fields ??= new Dictionary<string, Field>");
     WriteLine("        {");
-    PushIndent(Tabs(3));
+    PushIndent(T(3));
     for (int i = 0; i < Source.Fields.Count; i++) {
         fld = Source.Fields[i];
 
@@ -179,7 +179,7 @@
         Write(BuildArguments(filter.Parameters));
         WriteLine(")");
         WriteLine("{");
-        PushIndent(Tabs(1));
+        PushIndent(T(1));
 
         WriteLine("EnsureState();");
 
@@ -200,7 +200,7 @@
             WriteLine("s.WhereConditions.Add(new SearchCondition(");
             sep = " ";
 
-            PushIndent(Tabs(1));
+            PushIndent(T(1));
             for (int pi = 0; pi < predicates.Count; pi++) {
                 predicate = predicates[pi];
 
@@ -224,7 +224,7 @@
                                 tmp += ToRelationalOperatorEnumText(predicate.Relation) + ",";
                             }
                             WriteLine(tmp);
-                            PushIndent(Tabs(1));
+                            PushIndent(T(1));
                         }
                     }
 
@@ -313,12 +313,12 @@
         }
 
         ClearIndent();
-        PushIndent(Tabs(2));
+        PushIndent(T(2));
         WriteLine("}");
     }
 
     ClearIndent();
-    PushIndent(Tabs(2));
+    PushIndent(T(2));
 
     WriteLine("");
     WriteLine("#region Field key constants");
@@ -329,7 +329,7 @@
     WriteLine("/// </summary>");
     WriteLine("public static class FKey");
     WriteLine("{");
-    PushIndent(Tabs(1));
+    PushIndent(T(1));
     foreach (var f in Source.Fields)
     {
         WriteLine("/// <summary>");
@@ -345,7 +345,7 @@
 
     // class.
     ClearIndent();
-    PushIndent(Tabs(1));
+    PushIndent(T(1));
     WriteLine("}");
 
     // namespace.
