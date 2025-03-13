@@ -45,18 +45,19 @@
             documentation generated first) and configured to generate and/or validate the documentation.
         </p>
         <div class="my-5 col-8">
-            <c>
-                - task: KpokDocTool@2
-                displayName: 'Build technical documentation'
-                inputs:
-                  assemblyList: '**\KpokPatagon\bin\$(buildConfiguration)\net9.0\KpokPatagon.dll, ...'
-                  htmlPath: '$(Build.ArtifactStagingDirectory)\autodoc\ghpages\docs\techdocs'
-                  projectTitle: 'Kpok Patagon Framework'
-                  buildNumber: '$(Build.BuildNumber)'
-                  homeUrl: 'https://kpokpatagon.github.io/KpokPatagon/'
-                  projectDescription: 'A development framework aimed to help developers to easyly build enterprise applications.'
-              
-            </c>
+            <code>
+                <pre>
+- task: KpokDocTool@2
+displayName: 'Build technical documentation'
+inputs:
+  assemblyList: '**\KpokPatagon\bin\$(buildConfiguration)\net9.0\KpokPatagon.dll, ...'
+  htmlPath: '$(Build.ArtifactStagingDirectory)\autodoc\ghpages\docs\techdocs'
+  projectTitle: 'Kpok Patagon Framework'
+  buildNumber: '$(Build.BuildNumber)'
+  homeUrl: 'https://kpokpatagon.github.io/KpokPatagon/'
+  projectDescription: 'A development framework aimed to help developers to easyly build enterprise applications.'
+              </pre>
+            </code>
         </div>
 
         <h3 class="mt-5">Configuration options</h3>
