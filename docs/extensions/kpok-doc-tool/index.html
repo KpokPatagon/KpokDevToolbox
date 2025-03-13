@@ -28,7 +28,7 @@
     <div class="container mb-5">
         <h1 class="mt-3">Kpok Doc Tool</h1>
         <p>
-            <strong>Kpok Doc Tool</strong> is an extension form <em>Azure DevOps</em> and <em>Azure DevOps 
+            <strong>Kpok Doc Tool</strong> is an extension for <em>Azure DevOps</em> and <em>Azure DevOps 
             Server</em> that configured within a build pipeline, automatically generate technical documentation 
             for software products.
         </p>
@@ -44,8 +44,19 @@
             This tool is added as a task within a build pipeline after the build task (in order to get the XML
             documentation generated first) and configured to generate and/or validate the documentation.
         </p>
-        <div class="text-center my-5 col-8">
-            <img src="../../assets/kdt-config.png" class="rounded img-fluid" />
+        <div class="my-5 col-8">
+            <c>
+                - task: KpokDocTool@2
+                displayName: 'Build technical documentation'
+                inputs:
+                  assemblyList: '**\KpokPatagon\bin\$(buildConfiguration)\net9.0\KpokPatagon.dll, ...'
+                  htmlPath: '$(Build.ArtifactStagingDirectory)\autodoc\ghpages\docs\techdocs'
+                  projectTitle: 'Kpok Patagon Framework'
+                  buildNumber: '$(Build.BuildNumber)'
+                  homeUrl: 'https://kpokpatagon.github.io/KpokPatagon/'
+                  projectDescription: 'A development framework aimed to help developers to easyly build enterprise applications.'
+              
+            </c>
         </div>
 
         <h3 class="mt-5">Configuration options</h3>
@@ -57,18 +68,11 @@
                 corresponding XML documentation file is found.
             </dd>
 
-            <dt class="col-3">KET Source paths</dt>
-            <dd class="col-9">
-                A comma separated list of paths where <a href="../kpok-entity-tool/index.html">Kpok Entity Tool</a> 
-                <a href="../../techdocs/ket-models/index.html">models</a> will be looked from. If models are found, 
-                documentation for them will be generated.
-            </dd>
-
             <dt class="col-3">Validation mode</dt>
             <dd class="col-9">
                 <p>
                     Configures how documentation validation will be performed. All public and protected 
-                    "summaries" on types, methods, properties, KET models, etc. are required and will generate 
+                    "summaries" on types, methods, properties, etc. are required and will generate 
                     errors if left blank. Settings options will add more requirements to the validation process.
                 </p>
 
@@ -76,7 +80,7 @@
                 <ul>
                     <li>
                         <strong>WarnMethodArguments</strong>: (default) generates warnings if method arguments 
-                        are empty but no warning is generated if all of them are empty
+                        are left empty but no warning is generated if all of them are empty
                     </li>
                     <li>
                         <strong>ErrorOnMethodArguments</strong>: generates errors if any method argument is empty.

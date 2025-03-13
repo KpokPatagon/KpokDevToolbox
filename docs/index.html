@@ -51,12 +51,41 @@
                 <p class="lead">Available templates</p>
                 <ul>
                     <li>
-                        <code>DataModel-1.0.tt</code><br >
+                        <code>DataModel-1.0.tt</code><br />
                         Generates <strong>domain object models</strong> based on entities (*.ent) models.
+                    </li>
+                    <li>
+                        <code>DataModel-dto-1.0.tt</code><br />
+                        Generates a partial <strong>DTO</strong> class used to transfer data out that is 
+                        editable by the developer based on entities (*.ent).
+                    </li>
+                    <li>
+                        <code>DataModel-dto-designer-1.0.tt</code><br />
+                        Generates a partial <strong>DTO</strong> class used to transfer data out from the 
+                        properties of entities (*.ent).
+                    </li>
+                    <li>
+                        <code>DataModel-input-1.0.tt</code><br />
+                        Generates a partial <strong>DTO</strong> class used to transfer data in that is 
+                        editable by the developer based on entities (*.ent).
+                    </li>
+                    <li>
+                        <code>DataModel-input-designer-1.0.tt</code><br />
+                        Generates a partial <strong>DTO</strong> class used to transfer data in from the 
+                        properties of entities (*.ent).
+                    </li>
+                    <li>
+                        <code>DataModel-ts-1.0.tt</code><br />
+                        Generates an inteface and a class in TypeScript from the properties of entities (*.ent) models.
                     </li>
                     <li>
                         <code>DataServices-1.0.tt</code><br />
                         Generates <strong>data services</strong> based on data service (*.datasvc) models.
+                    </li>
+                    <li>
+                        <code>SqlServerCreateTable-1.0.tt</code><br />
+                        Generates a <code>CREATE TABLE</code> <strong>T-SQL</strong> script to create a table
+                        including indexes and foreign keys based on table (*.tbl) models.
                     </li>
                 </ul>
             </div>
