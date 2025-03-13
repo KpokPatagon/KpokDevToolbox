@@ -44,9 +44,8 @@
             This tool is added as a task within a build pipeline after the build task (in order to get the XML
             documentation generated first) and configured to generate and/or validate the documentation.
         </p>
-        <div class="my-5 col-8">
-            <code>
-                <pre>
+        <div class="my-5">
+            <pre>
 - task: KpokDocTool@2
 displayName: 'Build technical documentation'
 inputs:
@@ -56,8 +55,7 @@ inputs:
   buildNumber: '$(Build.BuildNumber)'
   homeUrl: 'https://kpokpatagon.github.io/KpokPatagon/'
   projectDescription: 'A development framework aimed to help developers to easyly build enterprise applications.'
-              </pre>
-            </code>
+          </pre>
         </div>
 
         <h3 class="mt-5">Configuration options</h3>
