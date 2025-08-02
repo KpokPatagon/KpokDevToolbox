@@ -164,7 +164,7 @@
         }
         if (!string.IsNullOrWhiteSpace(property.DefaultValue)) { Write(", DefaultValue = " + property.DefaultValue); }
         if (property.AutomaticType != AutomaticType.None) { Write(", AutomaticType = AutomaticType." + Convert.ToString(property.AutomaticType)); }
-        if (property.Protection != ProtectionType.None) { Write(", Protection = ProtectionType." + Convert.ToString(property.Protection)); }
+        if (property.Protection != ProtectionType.None) { Write(", Protection = " + ToProtectionTypeString(property.Protection)); }
 
         if (!string.IsNullOrWhiteSpace(modelLabelsType))
         {
@@ -176,7 +176,7 @@
         }
         else 
         {
-            Write(", Caption = \"" + property.Caption + "\"");
+            if (!string.IsNullOrWhiteSpace(property.Caption)) { Write(", Caption = \"" + property.Caption + "\""); }
             if (!string.IsNullOrWhiteSpace(property.Hint)) { Write(", Hint = \"" + property.Hint + "\""); }
             if (!string.IsNullOrWhiteSpace(property.MandatoryMessage)) { Write(", RequiredMessage = \"" + property.MandatoryMessage + "\""); }
             if (!string.IsNullOrWhiteSpace(property.InvalidContentMessage)) { Write(", InvalidContentMessage = \"" + property.InvalidContentMessage + "\""); }
@@ -334,7 +334,6 @@
     WriteLine("/// <summary>");
     WriteLine("/// Whether validation must be enforced.");
     WriteLine("/// </summary>");
-    WriteLine("[Editable(false)]");
     WriteLine("public override bool EnforceModelValidation => " + (Source.EnforceModelValidation ? "true;" : "false;"));
 
     // constructors

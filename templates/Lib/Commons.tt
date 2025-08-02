@@ -358,6 +358,15 @@
         }));
     }
 
+    // converts the protection type
+    protected virtual string ToProtectionTypeString(ProtectionType protection)
+    {
+        return protection == ProtectionType.None ? "ProtectionType.None" 
+             : protection == ProtectionType.Encrypted ? "ProtectionType.Encrypted"
+             : protection == ProtectionType.Hashed ? "ProtectionType.Hashed"
+             : "ProtectionType.Password";
+    }
+
     // converts the relation operator into a text representing the a RelationalOperator enum.
     protected virtual string ToRelationalOperatorEnumText(RelationOperator relation)
     {
