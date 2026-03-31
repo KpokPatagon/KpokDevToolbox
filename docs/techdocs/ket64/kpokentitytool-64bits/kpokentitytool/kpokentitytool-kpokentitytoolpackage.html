@@ -38,8 +38,42 @@
     <dt class="text-truncate col-3">Abstract:</dt><dd class="col-9">No</dd>
 <dt class="text-truncate col-sm-3">Inherits from:</dt>
 <dd class="col-sm-9">Community.VisualStudio.Toolkit.ToolkitPackage</dd>
+<dt class="text-truncate col-sm-3">Implements:</dt>
+<dd class="col-sm-9">System.IDisposable</dd>
 </dl>
 <h2 id="methods" class="mt-5">Methods</h2>
+<div id="M:KpokEntityTool.KpokEntityToolPackage.Dispose" class="mb-5">
+    <h3 class="lead text-info">Dispose</h3>
+    <p>Releases resources used by the package object.</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>public <span class="text-info" title="Void">Void</span> Dispose()</code></dd>
+</dl>
+</div>
+<div id="M:KpokEntityTool.KpokEntityToolPackage.Dispose(System.Boolean)" class="mb-5">
+    <h3 class="lead text-info">Dispose</h3>
+    <p>Releases resources used by the package object</p>
+<dl class="row">
+    <dt class="text-truncate col-2">Signature:</dt>
+    <dd class="col-10"><code>protected <span class="text-info" title="Void">Void</span> Dispose(disposing)</code></dd>
+</dl>
+<h6 class="mt-1">Parameters</h6>
+<table class="table table-sm table-bordered">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Summary</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>disposing</td>
+        <td><span class="text-info" title="Boolean">Boolean</span></td>
+        <td>This parameter determines whether the method has been called directly or indirectly by a user's code.</td>
+    </tr>
+</tbody></table>
+</div>
 <div id="M:KpokEntityTool.KpokEntityToolPackage.GetOutputWindowPaneAsync" class="mb-5">
     <h3 class="lead text-info">GetOutputWindowPaneAsync</h3>
     <p>Gets an output window pane for this extension.</p>
@@ -88,6 +122,8 @@
 <li><a href="#methods">Methods</a></li>
 <li>
     <ul style="font-size:0.8em;">
+        <li><a href="#M:KpokEntityTool.KpokEntityToolPackage.Dispose">Dispose</a></li>
+        <li><a href="#M:KpokEntityTool.KpokEntityToolPackage.Dispose(System.Boolean)">Dispose</a></li>
         <li><a href="#M:KpokEntityTool.KpokEntityToolPackage.GetOutputWindowPaneAsync">GetOutputWindowPaneAsync</a></li>
         <li><a href="#M:KpokEntityTool.KpokEntityToolPackage.InitializeAsync(System.Threading.CancellationToken,System.IProgress{Microsoft.VisualStudio.Shell.ServiceProgressData})">InitializeAsync</a></li>
     </ul>
